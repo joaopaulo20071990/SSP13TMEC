@@ -1,4 +1,4 @@
-// ====== CONFIGURAÇÃO FIREBASE =======
+// ========== CONFIGURAÇÃO FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -15,37 +15,36 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ====== Histórico local ======
-function carregarHistorico() {
-  const dados = JSON.parse(localStorage.getItem('historicoRegistros') || "[]");
-  listaRegistros.innerHTML = "";
-  dados.forEach(txt => {
-    const li = document.createElement('li');
-    li.textContent = txt;
-    listaRegistros.appendChild(li);
+// ======= Histórico global pelo Firebase =======
+function carregarHistoricoGlobal() {
+  database.ref('registros_finalizados').on('value', snapshot => {
+    listaRegistros.innerHTML = "";
+    const dados = snapshot.val() || {};
+    Object.values(dados).forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.texto || "";
+      listaRegistros.appendChild(li);
+    });
   });
 }
-function salvarHistorico() {
-  const dados = Array.from(listaRegistros.querySelectorAll('li'))
-    .map(li => li.textContent);
-  localStorage.setItem('historicoRegistros', JSON.stringify(dados));
+
+function adicionarAoHistoricoGlobal(txt, dadosRegistroFinal) {
+  database.ref('registros_finalizados').push({
+    texto: txt,
+    ...dadosRegistroFinal,
+    timestamp: new Date().toISOString()
+  });
 }
-function adicionarAoHistoricoRegistro(txt) {
-  const li = document.createElement("li");
-  li.textContent = txt;
-  listaRegistros.appendChild(li);
-  salvarHistorico();
-}
-function zerarHistorico() {
-  if (window.confirm("Tem certeza que deseja apagar o histórico?")) {
-    listaRegistros.innerHTML = '';
-    localStorage.removeItem('historicoRegistros');
+
+function zerarHistoricoGlobal() {
+  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
+    database.ref('registros_finalizados').remove();
   }
 }
-window.addEventListener('DOMContentLoaded', carregarHistorico);
-document.getElementById('zerarHistoricoBtn').onclick = zerarHistorico;
+window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
+document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
-// == BIPAGEM COM LEITOR 2D / QR ==
+// ========== Botão Bipar com Leitor 2D ==========
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -54,7 +53,6 @@ bipar2dBtn.onclick = function() {
   biparInput.value = '';
   biparInput.focus();
 };
-
 biparInput.addEventListener('keydown', function(e){
   if (e.key === "Enter" || e.key === "Tab") {
     const valor = biparInput.value.trim();
@@ -79,6 +77,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
+// ========== QR Code ==========
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -112,6 +111,7 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
+// ====== Contadores em tempo real ======
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -163,6 +163,7 @@ function exibirFormularioNovo() {
   };
   form.querySelector(".cancelar").onclick = () => form.remove();
 }
+
 function criarContadorDoBanco(id, dados) {
   const contador = document.createElement("div");
   contador.className = "contador";
@@ -207,9 +208,13 @@ function criarContadorDoBanco(id, dados) {
     if (!dados.horaEntrada) return;
     const agora = new Date();
     const diff = Math.floor((agora - new Date(dados.horaEntrada)) / 1000);
-    adicionarAoHistoricoRegistro(
-      `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`
-    );
+    const texto = `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
+    adicionarAoHistoricoGlobal(texto, {
+      svc: dados.svc || '', 
+      transportadora: dados.transportadora, 
+      placa: (dados.placa || '').toUpperCase(), 
+      tempoDecorrido: formatDuration(diff)
+    });
     database.ref('contadores/' + id).remove();
   };
 
