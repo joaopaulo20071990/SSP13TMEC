@@ -1,4 +1,4 @@
-// ====== CONFIGURAÇÃO FIREBASE (dados do seu projeto) =======
+// ====== CONFIGURAÇÃO FIREBASE =======
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -51,26 +51,42 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// 2) Leitor físico 2D: detectar e tratar colagem/leitura como teclado no campo Placa
-document.addEventListener('input', function(e) {
-  if (e.target.classList && e.target.classList.contains('placa')) {
-    const valor = e.target.value;
-    if (valor.includes(';')) {
+// 2) Botão Bipar com Leitor 2D
+const bipar2dBtn = document.getElementById('bipar2dBtn');
+const bipar2dBox = document.getElementById('bipar2dBox');
+const biparInput = document.getElementById('biparInput');
+
+bipar2dBtn.onclick = function() {
+  bipar2dBox.style.display = 'block';
+  biparInput.value = '';
+  biparInput.focus();
+};
+
+// Entra automaticamente ao bipar (Enter geralmente vem junto c/ bipagem)
+biparInput.addEventListener('keydown', function(e){
+  if(e.key === "Enter" || e.key === "Tab") {
+    const valor = biparInput.value.trim();
+    if(valor.includes(';')) {
       const [placa, transportadora] = valor.split(';');
-      e.target.value = placa;
-      // Seleciona o option correto se existir o select
-      const form = e.target.closest('.contador');
-      if (form) {
-        const select = form.querySelector('.transportadora');
-        if (select) {
-          select.value = transportadora || '';
-          // Se quiser registrar a entrada automaticamente:
-          const botaoEntrada = form.querySelector('.btnEntrada');
-          if (botaoEntrada && !botaoEntrada.disabled) {
-            botaoEntrada.click();
-          }
-        }
+      biparInput.value = '';
+      bipar2dBox.style.display = 'none';
+
+      if(placa && transportadora) {
+        database.ref('contadores').push({
+          placa: placa,
+          transportadora: transportadora,
+          horaEntrada: new Date().toISOString(),
+          horaSaida: "",
+          tempoDecorrido: 0,
+          ativo: true
+        });
+      } else {
+         alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
       }
+    } else {
+      alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
+      biparInput.value = '';
+      bipar2dBox.style.display = 'none';
     }
   }
 });
@@ -84,7 +100,7 @@ database.ref("contadores").on("value", snapshot => {
   });
 });
 
-// 4) Novo contador (formulário para preencher)
+// 4) Novo contador manual (formulário para preencher)
 document.getElementById("novoContadorBtn").onclick = function() {
   exibirFormularioNovo();
 };
