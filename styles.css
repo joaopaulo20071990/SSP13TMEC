@@ -111,6 +111,7 @@ body {
   font-size: 16px;
   transition: background 0.2s;
 }
+
 .button:active,
 .button:hover {
   background: #eab101;
@@ -208,7 +209,7 @@ input, select {
   border-left: 4px solid #fecb2f;
 }
 
-/* Botão zerar histórico */
+/* Zerador de histórico fixo */
 .zera-historico {
   position: fixed;
   right: 32px;

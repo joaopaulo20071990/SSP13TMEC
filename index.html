@@ -20,6 +20,8 @@
       <option value="KANGU">KANGU</option>
       <option value="BLD">BLD</option>
     </select>
+    <label for="filtroSVC" class="filtro-label" style="margin-top:8px;">Filtrar por SVC:</label>
+    <input id="filtroSVC" class="filtro-select" style="width:160px;" placeholder="Digite o SVC"/>
   </div>
 
   <button id="bipar2dBtn" class="button" style="margin-left:32px; margin-bottom:15px;">Bipar com Leitor 2D</button>
@@ -38,6 +40,7 @@
     <ul id="listaRegistros"></ul>
   </div>
 
+  <!-- botão de zerar histórico -->
   <button id="zerarHistoricoBtn" class="zera-historico">🗑 Zerar Histórico</button>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>

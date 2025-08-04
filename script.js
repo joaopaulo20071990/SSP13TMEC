@@ -1,11 +1,22 @@
-// ... Mesma configuração do Firebase ...
-
+// ====== CONFIGURAÇÃO FIREBASE =======
+const firebaseConfig = {
+  apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
+  authDomain: "tmec-mariliassp13.firebaseapp.com",
+  databaseURL: "https://tmec-mariliassp13-default-rtdb.firebaseio.com",
+  projectId: "tmec-mariliassp13",
+  storageBucket: "tmec-mariliassp13.appspot.com",
+  messagingSenderId: "1078206182223",
+  appId: "1:1078206182223:web:e07aa821b482efb29acb3a",
+  measurementId: "G-TEB1KFTEZP"
+};
+firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// Histórico local
+// ====== Histórico local ======
+// Carregar histórico persistente ao abrir página
 function carregarHistorico() {
   const dados = JSON.parse(localStorage.getItem('historicoRegistros') || "[]");
   listaRegistros.innerHTML = "";
@@ -15,16 +26,20 @@ function carregarHistorico() {
     listaRegistros.appendChild(li);
   });
 }
+// Salva histórico atual ao localStorage
 function salvarHistorico() {
-  const dados = Array.from(listaRegistros.querySelectorAll('li')).map(li => li.textContent);
+  const dados = Array.from(listaRegistros.querySelectorAll('li'))
+    .map(li => li.textContent);
   localStorage.setItem('historicoRegistros', JSON.stringify(dados));
 }
+// Função chamada sempre que adicionar registro no histórico
 function adicionarAoHistoricoRegistro(txt) {
   const li = document.createElement("li");
   li.textContent = txt;
   listaRegistros.appendChild(li);
   salvarHistorico();
 }
+// Função para zerar histórico
 function zerarHistorico() {
   if (window.confirm("Tem certeza que deseja apagar o histórico?")) {
     listaRegistros.innerHTML = '';
@@ -34,15 +49,17 @@ function zerarHistorico() {
 window.addEventListener('DOMContentLoaded', carregarHistorico);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistorico;
 
-// Bipar com Leitor 2D
+// == BIPAGEM COM LEITOR 2D / QR ==
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
+
 bipar2dBtn.onclick = function() {
   bipar2dBox.style.display = 'block';
   biparInput.value = '';
   biparInput.focus();
 };
+
 biparInput.addEventListener('keydown', function(e){
   if (e.key === "Enter" || e.key === "Tab") {
     const valor = biparInput.value.trim();
@@ -67,7 +84,6 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// QR Code por câmera
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -107,7 +123,6 @@ database.ref("contadores").on("value", snapshot => {
   Object.entries(dados).forEach(([id, contador]) => {
     contadoresContainer.appendChild(criarContadorDoBanco(id, contador));
   });
-  filtrarContadores();
 });
 
 document.getElementById("novoContadorBtn").onclick = function() {
@@ -198,9 +213,11 @@ function criarContadorDoBanco(id, dados) {
     if (!dados.horaEntrada) return;
     const agora = new Date();
     const diff = Math.floor((agora - new Date(dados.horaEntrada)) / 1000);
+    // Salva no histórico persistente
     adicionarAoHistoricoRegistro(
       `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`
     );
+    // Remove do banco (contador some da tela)
     database.ref('contadores/' + id).remove();
   };
 
@@ -234,20 +251,27 @@ document.getElementById("btnBaixar").onclick = function() {
   a.download = 'registros.txt';
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => {document.body.removeChild(a); URL.revokeObjectURL(url)}, 0);
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 0);
 };
 
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
+  const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
   const todos = document.querySelectorAll('.contador');
   todos.forEach(c => {
-    const transp = (c.getAttribute('data-transportadora') || '');
+    const transp = (c.getAttribute('data-transportadora') || '').toLowerCase();
+    const svc = (c.querySelector('.svc')?.value || c.querySelector('.svc')?.textContent || "").toLowerCase();
     let exibir = true;
-    if (selecao && transp !== selecao) exibir = false;
+    if (selecao && transp !== selecao.toLowerCase()) exibir = false;
+    if (svcFiltro && !svc.includes(svcFiltro)) exibir = false;
     c.style.display = exibir ? '' : 'none';
   });
 }
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
+document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
 
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
