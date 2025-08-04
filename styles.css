@@ -123,6 +123,12 @@ input, select {
   box-sizing: border-box;
 }
 
+.svc {
+  font-weight: bold;
+  color: #257613;
+  background: #eafde4;
+}
+
 .button {
   background: #fecb2f;
   color: #fff;

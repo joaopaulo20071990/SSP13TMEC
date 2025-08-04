@@ -9,7 +9,6 @@ const firebaseConfig = {
   appId: "1:1078206182223:web:e07aa821b482efb29acb3a",
   measurementId: "G-TEB1KFTEZP"
 };
-
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 // ====== FIM CONFIG FIREBASE =======
@@ -28,29 +27,24 @@ bipar2dBtn.onclick = function() {
   biparInput.focus();
 };
 
-// Ao bipar e dar Enter, cria direto contador
 biparInput.addEventListener('keydown', function(e){
   if (e.key === "Enter" || e.key === "Tab") {
     const valor = biparInput.value.trim();
-    if (valor.includes(';')) {
-      const [placa, transportadora] = valor.split(';');
+    let [svc, placa, transportadora] = valor.split(';');
+    if (svc && placa && transportadora) {
       biparInput.value = '';
       bipar2dBox.style.display = 'none';
-
-      if (placa && transportadora) {
-        database.ref('contadores').push({
-          placa: placa,
-          transportadora: transportadora,
-          horaEntrada: new Date().toISOString(),
-          horaSaida: "",
-          tempoDecorrido: 0,
-          ativo: true
-        });
-      } else {
-        alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
-      }
+      database.ref('contadores').push({
+        svc,
+        placa,
+        transportadora,
+        horaEntrada: new Date().toISOString(),
+        horaSaida: "",
+        tempoDecorrido: 0,
+        ativo: true
+      });
     } else {
-      alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
+      alert('Código inválido: precisa ser SVC;PLACA;TRANSPORTADORA');
       biparInput.value = '';
       bipar2dBox.style.display = 'none';
     }
@@ -69,12 +63,13 @@ document.getElementById('lerQr').onclick = function() {
         qrMessage => {
           html5QrCode.stop();
           document.getElementById('qr-show').style.display = 'none';
-          let [placa, transportadora] = qrMessage.trim().split(';');
-          if(!placa || !transportadora) {
-            alert("QR Code inválido. Precisa conter: PLACA;TRANSPORTADORA");
+          let [svc, placa, transportadora] = qrMessage.trim().split(';');
+          if(!svc || !placa || !transportadora) {
+            alert("QR Code inválido. Precisa conter: SVC;PLACA;TRANSPORTADORA");
             return;
           }
           database.ref('contadores').push({
+            svc,
             placa,
             transportadora,
             horaEntrada: new Date().toISOString(),
@@ -108,6 +103,8 @@ function exibirFormularioNovo() {
   const form = document.createElement('div');
   form.className = 'contador';
   form.innerHTML = `
+    <label>SVC:</label>
+    <input type="text" class="svc" placeholder="Digite o SVC"/>
     <label>Placa:</label>
     <input type="text" class="placa" placeholder="Digite a placa"/>
     <label>Transportadora:</label>
@@ -126,11 +123,12 @@ function exibirFormularioNovo() {
   contadoresContainer.insertBefore(form, contadoresContainer.firstChild);
 
   form.querySelector(".cadastrar").onclick = () => {
+    const svc = form.querySelector('.svc').value.trim();
     const placa = form.querySelector('.placa').value.trim();
     const transportadora = form.querySelector('.transportadora').value;
-    if (!placa || !transportadora) { alert("Preencha a placa e selecione a transportadora!"); return; }
+    if (!svc || !placa || !transportadora) { alert("Preencha o SVC, placa e selecione a transportadora!"); return; }
     database.ref('contadores').push({
-      placa, transportadora,
+      svc, placa, transportadora,
       horaEntrada: "",
       horaSaida: "",
       tempoDecorrido: 0,
@@ -149,6 +147,8 @@ function criarContadorDoBanco(id, dados) {
   let timerInterval = null;
 
   contador.innerHTML = `
+    <label>SVC:</label>
+    <input type="text" value="${dados.svc || ''}" disabled class="svc"/>
     <label>Placa:</label>
     <input type="text" value="${dados.placa}" disabled class="placa"/>
     <label>Transportadora:</label>
@@ -194,7 +194,7 @@ function criarContadorDoBanco(id, dados) {
     });
 
     const li = document.createElement("li");
-    li.textContent = `Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
+    li.textContent = `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
     listaRegistros.appendChild(li);
   };
 
