@@ -209,7 +209,7 @@ input, select {
   border-left: 4px solid #fecb2f;
 }
 
-/* Zerador de histórico fixo */
+/* Botão zerar histórico */
 .zera-historico {
   position: fixed;
   right: 32px;
