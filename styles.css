@@ -31,7 +31,6 @@ body {
   margin-bottom: 18px;
   gap: 2px;
 }
-
 .filtro-label {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
@@ -41,7 +40,6 @@ body {
   margin-top: 8px;
   letter-spacing: 0.5px;
 }
-
 .filtro-select {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-size: 1.09rem;
@@ -57,7 +55,6 @@ body {
   min-width: 200px;
   box-sizing: border-box;
 }
-
 .novo-contador-btn {
   background: #fecb2f;
   color: white;
@@ -72,12 +69,10 @@ body {
   display: block;
   transition: background 0.2s;
 }
-
 .novo-contador-btn:active,
 .novo-contador-btn:hover {
   background: #eab101;
 }
-
 .baixar {
   background: #fecb2f;
   color: white;
@@ -92,12 +87,10 @@ body {
   font-weight: bold;
   transition: background 0.2s;
 }
-
 .baixar:active,
 .baixar:hover {
   background: #eab101;
 }
-
 .button {
   background: #fecb2f;
   color: #fff;
@@ -111,16 +104,13 @@ body {
   font-size: 16px;
   transition: background 0.2s;
 }
-
 .button:active,
 .button:hover {
   background: #eab101;
 }
-
 #bipar2dBox {
   display: none;
 }
-
 #biparInput {
   font-size: 2rem;
   width: 340px;
@@ -132,7 +122,6 @@ body {
   background: #fffdeb;
   margin-top: 5px;
 }
-
 .contadores-container {
   display: flex;
   flex-wrap: wrap;
@@ -141,7 +130,6 @@ body {
   margin-bottom: 20px;
   max-width: calc(5 * 270px + 80px);
 }
-
 .contador {
   border: 1px solid #c8d4f3;
   border-radius: 12px;
@@ -153,7 +141,6 @@ body {
   align-items: flex-start;
   background: white;
 }
-
 input, select {
   margin-bottom: 10px;
   padding: 5px;
@@ -161,13 +148,11 @@ input, select {
   width: 100%;
   box-sizing: border-box;
 }
-
 .svc {
   font-weight: bold;
   color: #257613;
   background: #eafde4;
 }
-
 .remover {
   background: #ff9696;
   color: white;
@@ -179,7 +164,6 @@ input, select {
   font-size: 16px;
   cursor: pointer;
 }
-
 .timer {
   color: #31c231;
   font-size: 22px;
@@ -187,18 +171,15 @@ input, select {
   letter-spacing: 2px;
   margin-bottom: 10px;
 }
-
 .registros {
   margin-top: 25px;
   width: 90vw;
   max-width: 1400px;
   margin-left: 25px;
 }
-
 .registros ul {
   padding-left: 18px;
 }
-
 .registros li {
   margin-bottom: 6px;
   font-size: 15px;
@@ -208,8 +189,6 @@ input, select {
   word-break: break-all;
   border-left: 4px solid #fecb2f;
 }
-
-/* Zerador de histórico fixo */
 .zera-historico {
   position: fixed;
   right: 32px;

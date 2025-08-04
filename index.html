@@ -5,6 +5,8 @@
   <title>Contador Entrada e Saída</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://unpkg.com/html5-qrcode"></script>
+  <!-- SheetJS para salvar como Excel -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <header class="topo-cabecalho">TMEC - SSP13</header>
@@ -40,7 +42,6 @@
     <ul id="listaRegistros"></ul>
   </div>
 
-  <!-- botão de zerar histórico -->
   <button id="zerarHistoricoBtn" class="zera-historico">🗑 Zerar Histórico</button>
 
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
