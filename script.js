@@ -15,6 +15,40 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
+// ====== Histórico local ======
+// Carregar histórico persistente ao abrir página
+function carregarHistorico() {
+  const dados = JSON.parse(localStorage.getItem('historicoRegistros') || "[]");
+  listaRegistros.innerHTML = "";
+  dados.forEach(txt => {
+    const li = document.createElement('li');
+    li.textContent = txt;
+    listaRegistros.appendChild(li);
+  });
+}
+// Salva histórico atual ao localStorage
+function salvarHistorico() {
+  const dados = Array.from(listaRegistros.querySelectorAll('li'))
+    .map(li => li.textContent);
+  localStorage.setItem('historicoRegistros', JSON.stringify(dados));
+}
+// Função chamada sempre que adicionar registro no histórico
+function adicionarAoHistoricoRegistro(txt) {
+  const li = document.createElement("li");
+  li.textContent = txt;
+  listaRegistros.appendChild(li);
+  salvarHistorico();
+}
+// Função para zerar histórico
+function zerarHistorico() {
+  if (window.confirm("Tem certeza que deseja apagar o histórico?")) {
+    listaRegistros.innerHTML = '';
+    localStorage.removeItem('historicoRegistros');
+  }
+}
+window.addEventListener('DOMContentLoaded', carregarHistorico);
+document.getElementById('zerarHistoricoBtn').onclick = zerarHistorico;
+
 // == BIPAGEM COM LEITOR 2D / QR ==
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
@@ -50,7 +84,6 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// == QR Code por câmera ==
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -180,10 +213,10 @@ function criarContadorDoBanco(id, dados) {
     if (!dados.horaEntrada) return;
     const agora = new Date();
     const diff = Math.floor((agora - new Date(dados.horaEntrada)) / 1000);
-    // Histórico antes de remover
-    const li = document.createElement("li");
-    li.textContent = `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
-    listaRegistros.appendChild(li);
+    // Salva no histórico persistente
+    adicionarAoHistoricoRegistro(
+      `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`
+    );
     // Remove do banco (contador some da tela)
     database.ref('contadores/' + id).remove();
   };
