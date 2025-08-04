@@ -1,4 +1,4 @@
-// ====== CONFIGURAÇÃO FIREBASE (seus dados) =======
+// ====== CONFIGURAÇÃO FIREBASE (dados do seu projeto) =======
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -17,7 +17,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// QR CODE LER E CRIAR CONTADOR AUTOMÁTICO
+// 1) QR CODE: Ler e criar contador
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -51,7 +51,31 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// Carrega e exibe todos contadores em tempo real
+// 2) Leitor físico 2D: detectar e tratar colagem/leitura como teclado no campo Placa
+document.addEventListener('input', function(e) {
+  if (e.target.classList && e.target.classList.contains('placa')) {
+    const valor = e.target.value;
+    if (valor.includes(';')) {
+      const [placa, transportadora] = valor.split(';');
+      e.target.value = placa;
+      // Seleciona o option correto se existir o select
+      const form = e.target.closest('.contador');
+      if (form) {
+        const select = form.querySelector('.transportadora');
+        if (select) {
+          select.value = transportadora || '';
+          // Se quiser registrar a entrada automaticamente:
+          const botaoEntrada = form.querySelector('.btnEntrada');
+          if (botaoEntrada && !botaoEntrada.disabled) {
+            botaoEntrada.click();
+          }
+        }
+      }
+    }
+  }
+});
+
+// 3) Carrega e exibe todos contadores em tempo real
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -60,7 +84,7 @@ database.ref("contadores").on("value", snapshot => {
   });
 });
 
-// Novo contador (formulário para preencher)
+// 4) Novo contador (formulário para preencher)
 document.getElementById("novoContadorBtn").onclick = function() {
   exibirFormularioNovo();
 };
