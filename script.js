@@ -15,7 +15,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ========== Botão "Bipar com Leitor 2D" ==========
+// == BIPAGEM COM LEITOR 2D / QR ==
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -50,7 +50,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// ========== QR Code por câmera ==========
+// == QR Code por câmera ==
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -161,8 +161,6 @@ function criarContadorDoBanco(id, dados) {
 
   const btnEntrada = contador.querySelector(".btnEntrada");
   const btnSaida = contador.querySelector(".btnSaida");
-  const horaEntrada = contador.querySelector('.horaEntrada');
-  const horaSaida = contador.querySelector('.horaSaida');
   const timer = contador.querySelector('.timer');
 
   btnEntrada.disabled = !!dados.horaEntrada;
@@ -182,15 +180,12 @@ function criarContadorDoBanco(id, dados) {
     if (!dados.horaEntrada) return;
     const agora = new Date();
     const diff = Math.floor((agora - new Date(dados.horaEntrada)) / 1000);
-    database.ref('contadores/' + id).update({
-      horaSaida: agora.toISOString(),
-      ativo: false,
-      tempoDecorrido: diff
-    });
-
+    // Histórico antes de remover
     const li = document.createElement("li");
     li.textContent = `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
     listaRegistros.appendChild(li);
+    // Remove do banco (contador some da tela)
+    database.ref('contadores/' + id).remove();
   };
 
   contador.querySelector('.remover').onclick = function(){
@@ -211,7 +206,6 @@ function criarContadorDoBanco(id, dados) {
   return contador;
 }
 
-// ===== Baixar registros salvos em tela ======
 document.getElementById("btnBaixar").onclick = function() {
   const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
     .map(li => li.textContent)
@@ -230,7 +224,6 @@ document.getElementById("btnBaixar").onclick = function() {
   }, 0);
 };
 
-// ======= Filtro Transportadora e SVC =======
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
   const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
@@ -247,7 +240,6 @@ function filtrarContadores() {
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
 document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
 
-// ===== Funções utilitárias de tempo =====
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
