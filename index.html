@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Contador Entrada e Saída</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo-cabecalho">
+    TMEC - SSP13
+  </header>
+
+  <div class="filtro-esquerda">
+    <label for="filtroTransportadora" class="filtro-label">Filtrar por Transportadora:</label>
+    <select id="filtroTransportadora" class="filtro-select">
+      <option value="">Todas</option>
+      <option value="ALC">ALC</option>
+      <option value="MURICI">MURICI</option>
+      <option value="TORRES">TORRES</option>
+      <option value="ÚNICA">ÚNICA</option>
+      <option value="KANGU">KANGU</option>
+      <option value="BLD">BLD</option>
+    </select>
+  </div>
+
+  <button id="novoContadorBtn" class="novo-contador-btn">Novo Contador</button>
+  <div id="contadoresContainer" class="contadores-container"></div>
+  <button id="btnBaixar" class="baixar">Baixar Registros</button>
+  <div id="registros" class="registros">
+    <h3>Registros:</h3>
+    <ul id="listaRegistros"></ul>
+  </div>
+
+  <!-- Inclusive os SDKs Firebase ANTES do script.js -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
