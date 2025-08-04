@@ -17,7 +17,47 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// 1) QR CODE: Ler e criar contador
+// ========== Botão "Bipar com Leitor 2D" ==========
+const bipar2dBtn = document.getElementById('bipar2dBtn');
+const bipar2dBox = document.getElementById('bipar2dBox');
+const biparInput = document.getElementById('biparInput');
+
+bipar2dBtn.onclick = function() {
+  bipar2dBox.style.display = 'block';
+  biparInput.value = '';
+  biparInput.focus();
+};
+
+// Ao bipar e dar Enter, cria direto contador
+biparInput.addEventListener('keydown', function(e){
+  if (e.key === "Enter" || e.key === "Tab") {
+    const valor = biparInput.value.trim();
+    if (valor.includes(';')) {
+      const [placa, transportadora] = valor.split(';');
+      biparInput.value = '';
+      bipar2dBox.style.display = 'none';
+
+      if (placa && transportadora) {
+        database.ref('contadores').push({
+          placa: placa,
+          transportadora: transportadora,
+          horaEntrada: new Date().toISOString(),
+          horaSaida: "",
+          tempoDecorrido: 0,
+          ativo: true
+        });
+      } else {
+        alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
+      }
+    } else {
+      alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
+      biparInput.value = '';
+      bipar2dBox.style.display = 'none';
+    }
+  }
+});
+
+// ========== QR Code por câmera ==========
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -29,7 +69,6 @@ document.getElementById('lerQr').onclick = function() {
         qrMessage => {
           html5QrCode.stop();
           document.getElementById('qr-show').style.display = 'none';
-          // Esperado: "ABC1234;TRANSPORTADORA"
           let [placa, transportadora] = qrMessage.trim().split(';');
           if(!placa || !transportadora) {
             alert("QR Code inválido. Precisa conter: PLACA;TRANSPORTADORA");
@@ -51,47 +90,7 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// 2) Botão Bipar com Leitor 2D
-const bipar2dBtn = document.getElementById('bipar2dBtn');
-const bipar2dBox = document.getElementById('bipar2dBox');
-const biparInput = document.getElementById('biparInput');
-
-bipar2dBtn.onclick = function() {
-  bipar2dBox.style.display = 'block';
-  biparInput.value = '';
-  biparInput.focus();
-};
-
-// Entra automaticamente ao bipar (Enter geralmente vem junto c/ bipagem)
-biparInput.addEventListener('keydown', function(e){
-  if(e.key === "Enter" || e.key === "Tab") {
-    const valor = biparInput.value.trim();
-    if(valor.includes(';')) {
-      const [placa, transportadora] = valor.split(';');
-      biparInput.value = '';
-      bipar2dBox.style.display = 'none';
-
-      if(placa && transportadora) {
-        database.ref('contadores').push({
-          placa: placa,
-          transportadora: transportadora,
-          horaEntrada: new Date().toISOString(),
-          horaSaida: "",
-          tempoDecorrido: 0,
-          ativo: true
-        });
-      } else {
-         alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
-      }
-    } else {
-      alert('Código inválido: precisa ser PLACA;TRANSPORTADORA');
-      biparInput.value = '';
-      bipar2dBox.style.display = 'none';
-    }
-  }
-});
-
-// 3) Carrega e exibe todos contadores em tempo real
+// ---------- Firebase: Listar todos em tempo real ----------
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -100,7 +99,7 @@ database.ref("contadores").on("value", snapshot => {
   });
 });
 
-// 4) Novo contador manual (formulário para preencher)
+// ---------- Novo contador manual ----------
 document.getElementById("novoContadorBtn").onclick = function() {
   exibirFormularioNovo();
 };
@@ -237,7 +236,7 @@ document.getElementById("btnBaixar").onclick = function() {
   }, 0);
 };
 
-// ======= Função de filtro do select =======
+// ======= Filtro =======
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
   const todos = document.querySelectorAll('.contador');

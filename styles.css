@@ -142,6 +142,21 @@ input, select {
   background: #eab101;
 }
 
+#bipar2dBox {
+  display: none;
+}
+
+#biparInput {
+  font-size: 2rem;
+  width: 340px;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #fecb2f;
+  border-radius: 10px;
+  outline: none;
+  background: #fffdeb;
+  margin-top: 5px;
+}
 .remover {
   background: #ff9696;
   color: white;

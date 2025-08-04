@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Contador Entrada e Saída</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Biblioteca para leitura QR Code pela câmera -->
+  <!-- Biblioteca para leitura QR Code, se desejar usar a câmera -->
   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
@@ -25,13 +25,12 @@
     </select>
   </div>
 
-  <button id="lerQr" class="button" style="margin-left:32px; margin-bottom:15px;">Ler QR Code</button>
-
   <button id="bipar2dBtn" class="button" style="margin-left:32px; margin-bottom:15px;">Bipar com Leitor 2D</button>
   <div id="bipar2dBox" style="margin-left:32px; margin-bottom:15px; display:none;">
-    <input id="biparInput" type="text" style="font-size:2rem; width:280px; padding:8px; text-align:center;" placeholder="Bipe o código 2D aqui..." autofocus>
+    <input id="biparInput" type="text" style="font-size:2rem; width:340px; padding:10px; text-align:center;" placeholder="Bipe o código 2D aqui..." autofocus>
   </div>
 
+  <button id="lerQr" class="button" style="margin-left:32px; margin-bottom:15px;">Ler QR Code</button>
   <div id="qr-show" style="width:320px; margin-left:32px; display:none;"></div>
 
   <button id="novoContadorBtn" class="novo-contador-btn">Novo Contador</button>
@@ -45,6 +44,7 @@
   <!-- SDK Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <!-- Seu JS -->
   <script src="script.js"></script>
 </body>
 </html>
