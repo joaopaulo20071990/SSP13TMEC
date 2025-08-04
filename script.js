@@ -1,12 +1,11 @@
-// ... firebaseConfig igual às outras versões ...
-const firebaseConfig = { /* ...suas configs... */ };
-firebase.initializeApp(firebaseConfig);
+// ... Mesma configuração do Firebase ...
+
 const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ======= Histórico local =======
+// Histórico local
 function carregarHistorico() {
   const dados = JSON.parse(localStorage.getItem('historicoRegistros') || "[]");
   listaRegistros.innerHTML = "";
@@ -35,7 +34,7 @@ function zerarHistorico() {
 window.addEventListener('DOMContentLoaded', carregarHistorico);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistorico;
 
-// ========== Botão Bipar com Leitor 2D ==========
+// Bipar com Leitor 2D
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -68,7 +67,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// ========== QR Code ==========
+// QR Code por câmera
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -102,30 +101,12 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// ====== Contadores em tempo real e atualização de SVCs no filtro ======
-function atualizarFiltroSVC() {
-  const filtroSVC = document.getElementById('filtroSVC');
-  const svcSet = new Set();
-  document.querySelectorAll('.contador .svc')
-    .forEach(input => {
-      let val = (input.value || input.textContent || '').trim();
-      if(val) svcSet.add(val);
-    });
-  const valorAtual = filtroSVC.value;
-  filtroSVC.innerHTML = `<option value="">Todos</option>`;
-  Array.from(svcSet).sort().forEach(svcVal => {
-    const selected = svcVal === valorAtual ? 'selected' : '';
-    filtroSVC.innerHTML += `<option value="${svcVal}" ${selected}>${svcVal}</option>`;
-  });
-}
-
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
   Object.entries(dados).forEach(([id, contador]) => {
     contadoresContainer.appendChild(criarContadorDoBanco(id, contador));
   });
-  atualizarFiltroSVC();
   filtrarContadores();
 });
 
@@ -155,6 +136,7 @@ function exibirFormularioNovo() {
     <button class="remover cancelar">Cancelar</button>
   `;
   contadoresContainer.insertBefore(form, contadoresContainer.firstChild);
+
   form.querySelector(".cadastrar").onclick = () => {
     const svc = form.querySelector('.svc').value.trim();
     const placa = form.querySelector('.placa').value.trim();
@@ -257,19 +239,15 @@ document.getElementById("btnBaixar").onclick = function() {
 
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
-  const svcSel = document.getElementById('filtroSVC').value;
   const todos = document.querySelectorAll('.contador');
   todos.forEach(c => {
     const transp = (c.getAttribute('data-transportadora') || '');
-    const svc = (c.querySelector('.svc')?.value || c.querySelector('.svc')?.textContent || "");
     let exibir = true;
     if (selecao && transp !== selecao) exibir = false;
-    if (svcSel && svc !== svcSel) exibir = false;
     c.style.display = exibir ? '' : 'none';
   });
 }
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
-document.getElementById('filtroSVC').addEventListener('change', filtrarContadores);
 
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
