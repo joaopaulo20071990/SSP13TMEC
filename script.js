@@ -17,6 +17,40 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
+// QR CODE LER E CRIAR CONTADOR AUTOMÁTICO
+document.getElementById('lerQr').onclick = function() {
+  document.getElementById('qr-show').style.display = 'block';
+  const html5QrCode = new Html5Qrcode("qr-show");
+  Html5Qrcode.getCameras().then(cameras => {
+    if (cameras && cameras.length) {
+      html5QrCode.start(
+        cameras[0].id,
+        { fps: 10, qrbox: 220 },
+        qrMessage => {
+          html5QrCode.stop();
+          document.getElementById('qr-show').style.display = 'none';
+          // Esperado: "ABC1234;TRANSPORTADORA"
+          let [placa, transportadora] = qrMessage.trim().split(';');
+          if(!placa || !transportadora) {
+            alert("QR Code inválido. Precisa conter: PLACA;TRANSPORTADORA");
+            return;
+          }
+          database.ref('contadores').push({
+            placa,
+            transportadora,
+            horaEntrada: new Date().toISOString(),
+            horaSaida: "",
+            tempoDecorrido: 0,
+            ativo: true
+          });
+        }
+      );
+    } else {
+      alert("Câmera não encontrada!");
+    }
+  });
+};
+
 // Carrega e exibe todos contadores em tempo real
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
