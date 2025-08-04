@@ -11,7 +11,6 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-// ====== FIM CONFIG FIREBASE =======
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
@@ -85,7 +84,6 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// ---------- Firebase: Listar todos em tempo real ----------
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -94,7 +92,6 @@ database.ref("contadores").on("value", snapshot => {
   });
 });
 
-// ---------- Novo contador manual ----------
 document.getElementById("novoContadorBtn").onclick = function() {
   exibirFormularioNovo();
 };
@@ -171,7 +168,6 @@ function criarContadorDoBanco(id, dados) {
   btnEntrada.disabled = !!dados.horaEntrada;
   btnSaida.disabled = !dados.horaEntrada || !!dados.horaSaida;
 
-  // Entrada
   btnEntrada.onclick = function () {
     const agora = new Date();
     database.ref('contadores/' + id).update({
@@ -182,7 +178,6 @@ function criarContadorDoBanco(id, dados) {
     });
   };
 
-  // Saída
   btnSaida.onclick = function () {
     if (!dados.horaEntrada) return;
     const agora = new Date();
@@ -202,7 +197,6 @@ function criarContadorDoBanco(id, dados) {
     database.ref('contadores/' + id).remove();
   };
 
-  // Timer ao vivo!
   if (dados.horaEntrada && !dados.horaSaida) {
     const entrada = new Date(dados.horaEntrada);
     timerInterval = setInterval(() => {
@@ -236,20 +230,22 @@ document.getElementById("btnBaixar").onclick = function() {
   }, 0);
 };
 
-// ======= Filtro =======
+// ======= Filtro Transportadora e SVC =======
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
+  const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
   const todos = document.querySelectorAll('.contador');
   todos.forEach(c => {
-    const transp = c.getAttribute('data-transportadora');
-    if (!selecao || transp === selecao) {
-      c.style.display = '';
-    } else {
-      c.style.display = 'none';
-    }
+    const transp = (c.getAttribute('data-transportadora') || '').toLowerCase();
+    const svc = (c.querySelector('.svc')?.value || c.querySelector('.svc')?.textContent || "").toLowerCase();
+    let exibir = true;
+    if (selecao && transp !== selecao.toLowerCase()) exibir = false;
+    if (svcFiltro && !svc.includes(svcFiltro)) exibir = false;
+    c.style.display = exibir ? '' : 'none';
   });
 }
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
+document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
 
 // ===== Funções utilitárias de tempo =====
 function formatTime(date) {
