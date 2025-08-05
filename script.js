@@ -15,7 +15,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ======= Histórico firebase global =======
+// == HISTÓRICO GLOBAL FIREBASE ==
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -42,7 +42,7 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
-// == Botão Bipar com Leitor 2D ==
+// == BOTÃO BIPAR LEITOR 2D ==
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -109,7 +109,7 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// == Contadores em tempo real ==
+// == CONTADORES EM TEMPO REAL ==
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -233,7 +233,6 @@ function criarContadorDoBanco(id, dados) {
   return contador;
 }
 
-// Download dos registros
 document.getElementById("btnBaixar").onclick = function() {
   const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
     .map(li => li.textContent)
@@ -252,6 +251,10 @@ document.getElementById("btnBaixar").onclick = function() {
   }, 0);
 };
 
+// Filtros
+document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
+document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
+
 function filtrarContadores() {
   const selecao = document.getElementById('filtroTransportadora').value;
   const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
@@ -265,9 +268,8 @@ function filtrarContadores() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
-document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
 
+// Funções utilitárias tempo
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }

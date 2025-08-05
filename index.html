@@ -7,7 +7,13 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
-  <header class="topo-cabecalho">TMEC - SSP13</header>
+  <div class="header-superior">
+    <div class="filtro-svc-topo">
+      <label for="filtroSVC" class="filtro-label">Filtrar por SVC:</label>
+      <input id="filtroSVC" class="filtro-select" style="width:160px; margin-bottom:0;" placeholder="Digite o SVC"/>
+    </div>
+    <header class="topo-cabecalho">TMEC - SSP13</header>
+  </div>
 
   <div class="filtro-esquerda">
     <label for="filtroTransportadora" class="filtro-label">Filtrar por Transportadora:</label>
@@ -24,8 +30,6 @@
       <option value="BASEPEX ENCOM">BASEPEX ENCOM</option>
       <option value="RodaCoop">RodaCoop</option>
     </select>
-    <label for="filtroSVC" class="filtro-label" style="margin-top:8px;">Filtrar por SVC:</label>
-    <input id="filtroSVC" class="filtro-select" style="width:160px;" placeholder="Digite o SVC"/>
   </div>
 
   <button id="bipar2dBtn" class="button" style="margin-left:32px; margin-bottom:15px;">Bipar com Leitor 2D</button>
