@@ -1,4 +1,4 @@
-// ====== CONFIGURAÇÃO FIREBASE =======
+// ========== CONFIGURAÇÃO FIREBASE ==========
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -15,7 +15,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ==== HISTÓRICO GLOBAL FIREBASE ====
+// ======= Histórico firebase global =======
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -42,7 +42,7 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
-// ==== BOTÃO BIPAR LEITOR 2D ====
+// == Botão Bipar com Leitor 2D ==
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -75,7 +75,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// ==== QR CODE ====
+// == QR Code ==
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -109,7 +109,7 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// ==== CONTADORES EM TEMPO REAL ====
+// == Contadores em tempo real ==
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -186,7 +186,6 @@ function criarContadorDoBanco(id, dados) {
     <span class="timer">${dados.tempoDecorrido ? formatDuration(dados.tempoDecorrido) : "00:00:00"}</span>
     <button class="button btnSaida">Registrar Saída</button>
     <input type="text" class="horaSaida" placeholder="Hora de saída" value="${dados.horaSaida ? formatTime(new Date(dados.horaSaida)) : ""}" readonly>
-    <button class="remover">Remover</button>
   `;
 
   const btnEntrada = contador.querySelector(".btnEntrada");
@@ -217,10 +216,6 @@ function criarContadorDoBanco(id, dados) {
       placa: (dados.placa || '').toUpperCase(), 
       tempoDecorrido: formatDuration(diff)
     });
-    database.ref('contadores/' + id).remove();
-  };
-
-  contador.querySelector('.remover').onclick = function(){
     database.ref('contadores/' + id).remove();
   };
 
