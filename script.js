@@ -1,4 +1,4 @@
-// ========== CONFIGURAÇÃO FIREBASE ==========
+// ====== CONFIGURAÇÃO FIREBASE =======
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -15,7 +15,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// ======= Histórico global pelo Firebase =======
+// ==== HISTÓRICO GLOBAL FIREBASE ====
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -27,7 +27,6 @@ function carregarHistoricoGlobal() {
     });
   });
 }
-
 function adicionarAoHistoricoGlobal(txt, dadosRegistroFinal) {
   database.ref('registros_finalizados').push({
     texto: txt,
@@ -35,7 +34,6 @@ function adicionarAoHistoricoGlobal(txt, dadosRegistroFinal) {
     timestamp: new Date().toISOString()
   });
 }
-
 function zerarHistoricoGlobal() {
   if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
     database.ref('registros_finalizados').remove();
@@ -44,7 +42,7 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
-// ========== Botão Bipar com Leitor 2D ==========
+// ==== BOTÃO BIPAR LEITOR 2D ====
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -77,7 +75,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
-// ========== QR Code ==========
+// ==== QR CODE ====
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -111,7 +109,7 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// ====== Contadores em tempo real ======
+// ==== CONTADORES EM TEMPO REAL ====
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -135,12 +133,16 @@ function exibirFormularioNovo() {
     <label>Transportadora:</label>
     <select class="transportadora">
       <option value="">Selecione</option>
-      <option value="ALC">ALC</option>
-      <option value="MURICI">MURICI</option>
-      <option value="TORRES">TORRES</option>
-      <option value="ÚNICA">ÚNICA</option>
-      <option value="KANGU">KANGU</option>
-      <option value="BLD">BLD</option>
+      <option value="A L C TRANSPORTES">A L C TRANSPORTES</option>
+      <option value="Murici">Murici</option>
+      <option value="TORRESTRANSP">TORRESTRANSP</option>
+      <option value="UNICA TRANSPORTES">UNICA TRANSPORTES</option>
+      <option value="BLD LOGÍSTICA">BLD LOGÍSTICA</option>
+      <option value="Kangu Logistics">Kangu Logistics</option>
+      <option value="ON TIME SERVICOS">ON TIME SERVICOS</option>
+      <option value="3A BRASIL">3A BRASIL</option>
+      <option value="BASEPEX ENCOM">BASEPEX ENCOM</option>
+      <option value="RodaCoop">RodaCoop</option>
     </select>
     <button class="button cadastrar">Cadastrar</button>
     <button class="remover cancelar">Cancelar</button>
@@ -236,6 +238,7 @@ function criarContadorDoBanco(id, dados) {
   return contador;
 }
 
+// Download dos registros
 document.getElementById("btnBaixar").onclick = function() {
   const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
     .map(li => li.textContent)
