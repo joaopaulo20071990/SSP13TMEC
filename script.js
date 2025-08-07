@@ -175,7 +175,6 @@ function criarContadorDoBanco(id, dados) {
   contador.setAttribute("data-transportadora", dados.transportadora);
 
   let timerInterval = null;
-
   contador.innerHTML = `
     <label>SVC:</label>
     <input type="text" value="${dados.svc || ''}" disabled class="svc"/>
@@ -236,23 +235,38 @@ function criarContadorDoBanco(id, dados) {
   return contador;
 }
 
-// Download TXT
-document.getElementById("btnBaixar").onclick = function() {
-  const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
-    .map(li => li.textContent)
-    .join('\n');
-  if (!registros) { alert('Nenhum registro para baixar.'); return; }
-  const blob = new Blob([registros], {type: "text/plain"});
+// Download CSV
+document.getElementById("btnBaixarCSV").onclick = function () {
+  const registros = Array.from(document.querySelectorAll('#listaRegistros li')).map(li => li.textContent);
+  if (!registros.length) { alert('Nenhum registro para exportar.'); return; }
+  let csv = 'SVC,Transportadora,Placa,Tempo decorrido\n';
+  registros.forEach(txt => {
+    let [svc, transp, placa, tempo] = txt.split('|').map(s => (s || '').replace(/^.*:\s*/, '').replace(/,/g,';').trim());
+    csv += `"${svc || ''}","${transp || ''}","${placa || ''}","${tempo || ''}"\n`;
+  });
+  const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'registros.txt';
+  a.download = 'registros.csv';
   document.body.appendChild(a);
   a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 0);
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url) }, 0);
+};
+
+// Download XLSX
+document.getElementById("btnBaixarXLSX").onclick = function () {
+  const registros = Array.from(document.querySelectorAll('#listaRegistros li')).map(li => li.textContent);
+  if (!registros.length) { alert('Nenhum registro para exportar.'); return; }
+  const dados = [['SVC', 'Transportadora', 'Placa', 'Tempo decorrido']];
+  registros.forEach(txt => {
+    let [svc, transp, placa, tempo] = txt.split('|').map(s => (s || '').replace(/^.*:\s*/, '').trim());
+    dados.push([svc, transp, placa, tempo]);
+  });
+  const ws = XLSX.utils.aoa_to_sheet(dados);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Historico");
+  XLSX.writeFile(wb, "registros.xlsx");
 };
 
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
@@ -271,7 +285,6 @@ function filtrarContadores() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
