@@ -13,7 +13,6 @@ const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 
-// Timer global para atualizar tempo/cor
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
   window.timerAtivos = setInterval(() => {
