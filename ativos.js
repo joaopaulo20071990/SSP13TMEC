@@ -29,7 +29,7 @@ database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
   Object.values(dados).forEach(contador => {
-    if (contador.horaEntrada && !contador.horaSaida) { // só ativos
+    if (contador.horaEntrada && !contador.horaSaida) {
       contadoresContainer.appendChild(montaCard(contador));
     }
   });

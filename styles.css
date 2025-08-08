@@ -15,7 +15,7 @@ body {
   font-weight: 800;
   padding: 22px 0 13px 0;
   margin-bottom: 0;
-  box-shadow: 0 1px 12px 0 rgba(88,88,180,0.09);
+  box-shadow: 0 1px 12px 0 #ffeeaa88;
   text-shadow: 1px 1px 4px #af9a04;
 }
 .header-flex-space span {
@@ -38,9 +38,14 @@ body {
 }
 .filtro-svc-no-topo .filtro-select {
   background: #fffbe8;
-  border-color: #ffe17c;
+  border: none;
   color: #444;
   margin-bottom: 0;
+  border-radius: 10px;
+  padding: 7px 20px;
+  font-size: 1.13rem;
+  font-weight: bold;
+  box-shadow: 0 1.5px 6px #fff4be41;
 }
 .filtro-esquerda {
   display: flex;
@@ -51,31 +56,61 @@ body {
   margin-bottom: 18px;
 }
 .filtro-label {
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1.18rem;
+  color: #1872c0;
+  margin-bottom: 3px;
   font-weight: 700;
-  font-size: 1.15rem;
-  color: #1565c0;
-  margin-bottom: 2px;
-  margin-top: 8px;
-  letter-spacing: 0.5px;
 }
 .filtro-select {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-size: 1.09rem;
-  font-weight: 600;
+  font-size: 1.12rem;
+  font-weight: bold;
   color: #222;
-  background: #ecf6ff;
+  background: #e8f4ff;
   border-radius: 10px;
   border: none;
-  padding: 7px 16px;
   outline: none;
-  margin-bottom: 5px;
-  text-align: center;
+  padding: 7px 15px;
+  margin-bottom: 9px;
   min-width: 170px;
   box-sizing: border-box;
 }
+.acoes-centrais {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
 
-/* CONTADORES e BOTÕES */
+.botao-amarelo, .novo-contador-btn, .baixar,
+.button, .registrar-entrada, .registrar-saida {
+  background: #ffd153 !important;
+  color: #fff !important;
+  border: none;
+  font-weight: bold !important;
+  border-radius: 12px !important;
+  font-size: 18px !important;
+  letter-spacing: 0.1px;
+  padding: 13px 0 !important;
+  width: 235px !important;
+  min-width: 130px;
+  max-width: 99vw;
+  min-height: 47px;
+  box-shadow: 0 2px 8px #ffe17c50;
+  transition: background 0.15s;
+  text-align: center;
+  display: block;
+  margin-bottom: 18px !important;
+}
+.botao-amarelo:active, .botao-amarelo:hover,
+.novo-contador-btn:active, .novo-contador-btn:hover,
+.baixar:active, .baixar:hover,
+.button:active, .button:hover,
+.registrar-entrada:active, .registrar-entrada:hover,
+.registrar-saida:active, .registrar-saida:hover {
+  background: #fecb2f !important;
+  color: #fff;
+}
+
 .contadores-container {
   display: flex;
   flex-wrap: wrap;
@@ -83,6 +118,7 @@ body {
   margin-left: 25px;
   margin-bottom: 20px;
 }
+
 .contador {
   background: #fff;
   border: 2px solid #eae9f5;
@@ -109,8 +145,6 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-
-/* Placa em vermelho e negrito */
 input.placa,
 input.placa[disabled] {
   color: #e22525 !important;
@@ -119,40 +153,45 @@ input.placa[disabled] {
   background: #fff7f7 !important;
 }
 
-/* BOTÕES AMARELOS LETRA BRANCA */
-.button,
-.novo-contador-btn,
-.baixar,
-.registrar-entrada,
-.registrar-saida {
-  background: #ffd153 !important;
-  color: #fff !important;
-  border: none !important;
-  font-weight: bold !important;
-  border-radius: 12px !important;
-  margin-bottom: 18px !important;
-  font-size: 18px !important;
-  letter-spacing: 0.2px;
-  padding: 13px 0 !important;
-  width: 235px !important;
-  max-width: 98vw;
-  min-height: 47px;
-  box-shadow: 0 2px 8px #ffe17c50;
-  transition: background 0.16s;
-  display: block;
-  text-align: center;
-}
-.button:active, .button:hover,
-.novo-contador-btn:active, .novo-contador-btn:hover,
-.baixar:active, .baixar:hover,
-.registrar-entrada:active, .registrar-entrada:hover,
-.registrar-saida:active, .registrar-saida:hover {
-  background: #fecb2f !important;
-}
 .timer {
   color: #21c921;
   font-size: 22px;
   font-weight: bolder;
   margin-bottom: 10px;
   letter-spacing: 2px;
+}
+
+/* Botão zerar histórico - vermelho claro/letra vermelho escuro */
+.zera-historico {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  background: #ffdede;
+  color: #c60c0c !important;
+  border: none;
+  border-radius: 30px;
+  padding: 18px 44px;
+  font-size: 1.16rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 2px 7px #aaa;
+  z-index: 1000;
+  transition: background 0.15s, color 0.15s;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+.zera-historico:hover {
+  background: #ffc3c3;
+  color: #881313 !important;
+}
+
+@media (max-width:600px) {
+  .header-flex-space span {
+    font-size: 1.2rem;
+    margin-left: 8px;
+  }
+  .contadores-container { margin-left:10px; gap: 8px;}
+  .filtro-svc-no-topo, .filtro-esquerda {margin-left: 10px;}
+  .botao-amarelo, .novo-contador-btn, .baixar { width: 96vw !important; min-width: 105px; }
 }
