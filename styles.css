@@ -1,25 +1,170 @@
-/* Cabeçalho, filtros, contadores... igual suas versões anteriores */
-
-/* PLACA em negrito e vermelho em todos os contextos */
-.placa,
-input.placa[disabled],
-input.placa:read-only {
-  color: #e50707 !important;
-  font-weight: bold !important;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f8ff;
 }
 
-/* Visualização dos cards coloridos (VISUALIZAÇÃO – as cores de borda/fundo vão pelo JS) */
+/* Cabeçalho amarelo flexível */
+.header-flex-space,
+.topo-cabecalho.header-flex-space {
+  display: flex;
+  align-items: center;
+  background: #fecb2f;
+  color: #fff;
+  font-size: 2.3rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
+  padding: 22px 0 13px 0;
+  margin-bottom: 0;
+  box-shadow: 0 1px 12px 0 rgba(88,88,180,0.09);
+  text-shadow: 1px 1px 4px #af9a04;
+}
+.header-flex-space span {
+  margin-left: 44px;
+  flex: 1;
+  text-align: left;
+}
+.filtro-svc-no-topo {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  margin-right: 34px;
+}
+.filtro-svc-no-topo .filtro-label {
+  font-size: 1.13rem;
+  margin-bottom: 0;
+  margin-right: 8px;
+  color: #1565c0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.filtro-svc-no-topo .filtro-select {
+  background: #fffbe8;
+  border-color: #ffe17c;
+  color: #444;
+  margin-bottom: 0;
+}
+
+.filtro-esquerda {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 24px;
+  margin-left: 32px;
+  margin-bottom: 18px;
+}
+
+.filtro-label {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #1565c0;
+  margin-bottom: 2px;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+.filtro-select {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 1.09rem;
+  font-weight: 600;
+  color: #222;
+  background: #ecf6ff;
+  border-radius: 8px;
+  border: 1px solid #b5d5fc;
+  padding: 7px 22px;
+  outline: none;
+  margin-bottom: 5px;
+  text-align: center;
+  min-width: 200px;
+  box-sizing: border-box;
+}
+.novo-contador-btn {
+  background: #fecb2f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin: 25px 0 18px 25px;
+  width: 180px;
+  height: 40px;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: bold;
+  display: block;
+  transition: background 0.2s;
+}
+.novo-contador-btn:active, .novo-contador-btn:hover { background: #eab101; }
+.baixar {
+  background: #fecb2f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  margin-left: 25px;
+  margin-bottom: 10px;
+  width: 180px;
+  height: 38px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.baixar:active,.baixar:hover {background: #eab101;}
+.button {
+  background: #fecb2f;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 4px;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+.button:active,.button:hover {background: #eab101;}
+
+#bipar2dBox { display: none;}
+#biparInput {
+  font-size: 2rem;
+  width: 340px;
+  padding: 10px;
+  text-align: center;
+  border: 2px solid #fecb2f;
+  border-radius: 10px;
+  outline: none;
+  background: #fffdeb;
+  margin-top: 5px;
+}
+
+.contadores-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-left: 25px;
+  margin-bottom: 20px;
+  max-width: calc(5 * 270px + 80px);
+}
+
 .contador {
-  border: 2.5px solid #c8d4f3;
+  border: 1.5px solid #c8d4f3;
   border-radius: 12px;
   padding: 18px 20px;
   width: 250px;
   box-shadow: 2px 2px 8px #eee;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   background: white;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+/* PLACA no texto vermelho, negrito, em todos os lugares */
+input.placa,
+input.placa[disabled],
+input.placa:read-only,
+.placa {
+  color: #e50707 !important;
+  font-weight: bold !important;
 }
 
 .timer {
@@ -30,4 +175,54 @@ input.placa:read-only {
   margin-bottom: 10px;
 }
 
-/* O RESTANTE igual: filtros, botões, responsivo */
+.registros {
+  margin-top: 25px;
+  width: 90vw;
+  max-width: 1400px;
+  margin-left: 25px;
+}
+
+.registros ul {
+  padding-left: 18px;
+}
+
+.registros li {
+  margin-bottom: 6px;
+  font-size: 15px;
+  background: #f9f9fc;
+  border-radius: 5px;
+  padding: 4px 8px;
+  word-break: break-all;
+  border-left: 4px solid #fecb2f;
+}
+
+.zera-historico {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 70px;
+  padding: 18px 30px;
+  font-size: 1.16rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 2px 7px #aaa;
+  z-index: 1000;
+  transition: background 0.15s;
+}
+.zera-historico:hover {background:#d80000;}
+
+/* Responsivo */
+@media (max-width:600px) {
+  .header-flex-space span {
+    font-size: 1.4rem;
+    margin-left: 8px;
+  }
+  .contadores-container {
+    margin-left:10px;
+    gap:5px;
+  }
+  .filtro-svc-no-topo, .filtro-esquerda {margin-left:12px;}
+}
