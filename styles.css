@@ -3,6 +3,7 @@ body {
   margin: 0;
   background: #f4f8ff;
 }
+
 .header-flex-space,
 .topo-cabecalho.header-flex-space {
   display: flex;
@@ -79,9 +80,9 @@ body {
   gap: 18px;
   margin-bottom: 18px;
 }
-/* BOTÕES AMARELOS LETRA BRANCA */
-.botao-amarelo, .novo-contador-btn, .baixar,
-.button, .registrar-entrada, .registrar-saida {
+
+/* BOTÕES AMARELO E LETRA BRANCA PADRÃO */
+.botao-amarelo {
   background: #ffd153;
   color: #fff !important;
   border: none;
@@ -100,12 +101,7 @@ body {
   text-align: center;
   margin-bottom: 18px !important;
 }
-.botao-amarelo:active, .botao-amarelo:hover,
-.novo-contador-btn:active, .novo-contador-btn:hover,
-.baixar:active, .baixar:hover,
-.button:active, .button:hover,
-.registrar-entrada:active, .registrar-entrada:hover,
-.registrar-saida:active, .registrar-saida:hover {
+.botao-amarelo:active, .botao-amarelo:hover {
   background: #fecb2f !important;
   color: #fff !important;
 }
@@ -142,10 +138,7 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-
-/* Placa em rosa e vermelho negrito no visualizador */
-input.placa,
-input.placa[disabled] {
+input.placa, input.placa[disabled] {
   background: #fff5f5 !important;
   color: #e50707 !important;
   font-weight: bold !important;
@@ -153,7 +146,6 @@ input.placa[disabled] {
   border: 1.3px solid #efb1b1 !important;
   letter-spacing: 0.08em;
 }
-
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -162,7 +154,6 @@ input.placa[disabled] {
   letter-spacing: 2px;
 }
 
-/* Botão zerar: vermelho claro, texto vermelho escuro, arredondado */
 .zera-historico {
   position: fixed;
   left: 50%;
