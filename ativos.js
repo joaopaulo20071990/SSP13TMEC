@@ -12,7 +12,32 @@ firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
-let timerAtivos = null;
+
+// Timer global para atualizar tempo/cor
+function iniciarAtualizacaoTempo(){
+  if(window.timerAtivos) clearInterval(window.timerAtivos);
+  window.timerAtivos = setInterval(() => {
+    document.querySelectorAll('.contador').forEach(el => {
+      const timerSpan = el.querySelector('.timer');
+      const dt = timerSpan?.getAttribute('data-horaentrada');
+      if (!dt) return;
+      timerSpan.textContent = tempoDecorrido(dt);
+      // === Colorir pelo tempo ===
+      const tempo = segundosDecorridos(dt);
+      if (tempo < 15*60) {
+        el.style.borderColor = "#21ba21";
+        el.style.background = "#eafaeb";
+      }
+      else if (tempo < 25*60) {
+        el.style.borderColor = "#ffb800";
+        el.style.background = "#fffddb";
+      } else {
+        el.style.borderColor = "#e50707";
+        el.style.background = "#fff1f1";
+      }
+    });
+  }, 1000);
+}
 
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
@@ -38,9 +63,16 @@ function montaCard(dados) {
     <input type="text" value="${dados.transportadora}" disabled class="transportadora"/>
     <input type="text" class="horaEntrada" placeholder="Hora de entrada" value="${dados.horaEntrada ? formatTime(new Date(dados.horaEntrada)) : ''}" readonly>
     <div style="margin-top: 14px; font-weight: bold;">Tempo decorrido:</div>
-    <span class="timer" data-horaentrada="${dados.horaEntrada}">${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}</span>
+    <span class="timer" data-horaentrada="${dados.horaEntrada}">
+      ${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}
+    </span>
   `;
   el.setAttribute("data-transportadora", dados.transportadora);
+  // Primeira cor ao entrar
+  const tempo = dados.horaEntrada ? segundosDecorridos(dados.horaEntrada) : 0;
+  if (tempo < 15*60) { el.style.borderColor = "#21ba21"; el.style.background = "#eafaeb"; }
+  else if (tempo < 25*60) { el.style.borderColor = "#ffb800"; el.style.background = "#fffddb"; }
+  else { el.style.borderColor = "#e50707"; el.style.background = "#fff1f1"; }
   return el;
 }
 
@@ -55,15 +87,9 @@ function tempoDecorrido(dtStr) {
   const s = String(diff%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
 }
-
-// Timer global que fica atualizando todos os timers ativos a cada 1s
-function iniciarAtualizacaoTempo(){
-  if(window.timerAtivos) clearInterval(window.timerAtivos);
-  window.timerAtivos = setInterval(() => {
-    document.querySelectorAll('.timer[data-horaentrada]').forEach(span => {
-      span.textContent = tempoDecorrido(span.getAttribute('data-horaentrada'));
-    });
-  }, 1000);
+function segundosDecorridos(dtStr) {
+  const entrada = new Date(dtStr);
+  return Math.floor((Date.now() - entrada.getTime()) / 1000);
 }
 
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarAtivos);
