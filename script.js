@@ -14,7 +14,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// Histórico global Firebase
+// HISTÓRICO GLOBAL FIREBASE
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -41,7 +41,6 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
-// Novo contador padrão, leitura 2D, QR e filtros em tempo real...
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -185,7 +184,7 @@ function criarContadorDoBanco(id, dados) {
     <button class="button btnEntrada">Registrar Entrada</button>
     <input type="text" class="horaEntrada" placeholder="Hora de entrada" value="${dados.horaEntrada ? formatTime(new Date(dados.horaEntrada)) : ''}" readonly>
     <div style="margin: 15px 0 0 0; font-weight: bold;">Tempo decorrido:</div>
-    <span class="timer">${dados.tempoDecorrido ? formatDuration(dados.tempoDecorrido) : "00:00:00"}</span>
+    <span class="timer">${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}</span>
     <button class="button btnSaida">Registrar Saída</button>
     <input type="text" class="horaSaida" placeholder="Hora de saída" value="${dados.horaSaida ? formatTime(new Date(dados.horaSaida)) : ""}" readonly>
   `;
@@ -208,18 +207,23 @@ function criarContadorDoBanco(id, dados) {
 
   btnSaida.onclick = function () {
     if (!dados.horaEntrada) return;
+    // CONFIRM antes de finalizar
+    const confirmar = window.confirm("Gostaria de finalizar?\n\nClique em OK para finalizar. Clique em Cancelar para manter o contador ativo.");
+    if (!confirmar) return;
+
     const agora = new Date();
     const diff = Math.floor((agora - new Date(dados.horaEntrada)) / 1000);
     const texto = `SVC: ${dados.svc || ''} | Transportadora: ${dados.transportadora} | Placa: ${dados.placa.toUpperCase()} | Tempo decorrido: ${formatDuration(diff)}`;
     adicionarAoHistoricoGlobal(texto, {
-      svc: dados.svc || '', 
-      transportadora: dados.transportadora, 
-      placa: (dados.placa || '').toUpperCase(), 
+      svc: dados.svc || '',
+      transportadora: dados.transportadora,
+      placa: (dados.placa || '').toUpperCase(),
       tempoDecorrido: formatDuration(diff)
     });
     database.ref('contadores/' + id).remove();
   };
 
+  // Tempo decorrido dinâmico
   if (dados.horaEntrada && !dados.horaSaida) {
     const entrada = new Date(dados.horaEntrada);
     timerInterval = setInterval(() => {
@@ -230,11 +234,9 @@ function criarContadorDoBanco(id, dados) {
   } else if (dados.tempoDecorrido && dados.horaSaida) {
     timer.textContent = formatDuration(dados.tempoDecorrido);
   }
-
   return contador;
 }
 
-// Download TXT
 document.getElementById("btnBaixar").onclick = function() {
   const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
     .map(li => li.textContent)
@@ -269,7 +271,6 @@ function filtrarContadores() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
@@ -278,4 +279,12 @@ function formatDuration(seconds) {
   const m = String(Math.floor((seconds%3600)/60)).padStart(2,'0');
   const s = String(seconds%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
-}	
+}
+function tempoDecorrido(dtStr) {
+  const entrada = new Date(dtStr);
+  const diff = Math.floor((Date.now() - entrada.getTime()) / 1000);
+  const h = String(Math.floor(diff/3600)).padStart(2,'0');
+  const m = String(Math.floor((diff%3600)/60)).padStart(2,'0');
+  const s = String(diff%60).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
