@@ -74,6 +74,7 @@ body {
   min-width: 170px;
   box-sizing: border-box;
 }
+
 .acoes-centrais {
   display: flex;
   justify-content: center;
@@ -81,9 +82,9 @@ body {
   margin-bottom: 18px;
 }
 
-.botao-amarelo, .novo-contador-btn, .baixar,
-.button, .registrar-entrada, .registrar-saida {
-  background: #ffd153 !important;
+/* BOTÕES AMARELOS LETRA BRANCA PADRÃO */
+.botao-amarelo {
+  background: #ffd153;
   color: #fff !important;
   border: none;
   font-weight: bold !important;
@@ -97,18 +98,14 @@ body {
   min-height: 47px;
   box-shadow: 0 2px 8px #ffe17c50;
   transition: background 0.15s;
+  display: inline-block;
   text-align: center;
-  display: block;
   margin-bottom: 18px !important;
 }
-.botao-amarelo:active, .botao-amarelo:hover,
-.novo-contador-btn:active, .novo-contador-btn:hover,
-.baixar:active, .baixar:hover,
-.button:active, .button:hover,
-.registrar-entrada:active, .registrar-entrada:hover,
-.registrar-saida:active, .registrar-saida:hover {
+.botao-amarelo:active,
+.botao-amarelo:hover {
   background: #fecb2f !important;
-  color: #fff;
+  color: #fff !important;
 }
 
 .contadores-container {
@@ -118,7 +115,6 @@ body {
   margin-left: 25px;
   margin-bottom: 20px;
 }
-
 .contador {
   background: #fff;
   border: 2px solid #eae9f5;
@@ -145,14 +141,12 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-input.placa,
-input.placa[disabled] {
+input.placa, input.placa[disabled] {
   color: #e22525 !important;
   font-weight: bold !important;
   font-size: 16px !important;
   background: #fff7f7 !important;
 }
-
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -161,7 +155,7 @@ input.placa[disabled] {
   letter-spacing: 2px;
 }
 
-/* Botão zerar histórico - vermelho claro/letra vermelho escuro */
+/* Botão zerar: vermelho claro, texto vermelho escuro, arredondado */
 .zera-historico {
   position: fixed;
   left: 50%;
@@ -185,7 +179,6 @@ input.placa[disabled] {
   background: #ffc3c3;
   color: #881313 !important;
 }
-
 @media (max-width:600px) {
   .header-flex-space span {
     font-size: 1.2rem;
@@ -193,5 +186,5 @@ input.placa[disabled] {
   }
   .contadores-container { margin-left:10px; gap: 8px;}
   .filtro-svc-no-topo, .filtro-esquerda {margin-left: 10px;}
-  .botao-amarelo, .novo-contador-btn, .baixar { width: 96vw !important; min-width: 105px; }
+  .botao-amarelo { width: 96vw !important; min-width: 105px;}
 }

@@ -13,6 +13,7 @@ const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 
+// Atualiza tempo ao vivo
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
   window.timerAtivos = setInterval(() => {
@@ -25,13 +26,22 @@ function iniciarAtualizacaoTempo(){
   }, 1000);
 }
 
+// EXIBIÇÃO ORDENADA: os que têm mais tempo decorrido vem primeiro
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
-  contadoresContainer.innerHTML = "";
+  let ativos = [];
   Object.values(dados).forEach(contador => {
     if (contador.horaEntrada && !contador.horaSaida) {
-      contadoresContainer.appendChild(montaCard(contador));
+      const entrada = new Date(contador.horaEntrada);
+      const tempo = Math.floor((Date.now() - entrada.getTime()) / 1000);
+      ativos.push({...contador, _decorrido: tempo});
     }
+  });
+  ativos.sort((a, b) => b._decorrido - a._decorrido);
+
+  contadoresContainer.innerHTML = "";
+  ativos.forEach(contador => {
+    contadoresContainer.appendChild(montaCard(contador));
   });
   filtrarAtivos();
   iniciarAtualizacaoTempo();
@@ -85,3 +95,10 @@ function filtrarAtivos() {
     c.style.display = exibir ? '' : 'none';
   });
 }
+
+// Zerar histórico visualização caso tenha:
+document.getElementById('zerarHistoricoBtn').onclick = function() {
+  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
+    firebase.database().ref('registros_finalizados').remove();
+  }
+};
