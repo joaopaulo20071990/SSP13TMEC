@@ -94,7 +94,7 @@ function filtrarAtivos() {
   });
 }
 
-// Botão zerar histórico visualização caso tenha:
+// Zerar histórico visualização caso tenha:
 document.getElementById('zerarHistoricoBtn').onclick = function() {
   if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
     firebase.database().ref('registros_finalizados').remove();
