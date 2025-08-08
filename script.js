@@ -14,6 +14,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
+// Histórico global Firebase
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -40,6 +41,7 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
+// Novo contador padrão, leitura 2D, QR e filtros em tempo real...
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -276,4 +278,4 @@ function formatDuration(seconds) {
   const m = String(Math.floor((seconds%3600)/60)).padStart(2,'0');
   const s = String(seconds%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
-}
+}	
