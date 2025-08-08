@@ -45,7 +45,7 @@ function montaCard(dados) {
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
-// Só mostra tempo fixo ao carregar a tela (não atualiza ao vivo)
+// Só mostra tempo fixo ao renderizar (não atualiza ao vivo)
 function tempoDecorrido(dtStr) {
   const entrada = new Date(dtStr);
   const diff = Math.floor((Date.now() - entrada.getTime()) / 1000);

@@ -4,8 +4,6 @@ body {
   padding: 0;
   background: #f4f8ff;
 }
-
-/* Cabeçalho amarelo flexível */
 .header-flex-space,
 .topo-cabecalho.header-flex-space {
   display: flex;
@@ -44,7 +42,6 @@ body {
   color: #444;
   margin-bottom: 0;
 }
-
 .filtro-esquerda {
   display: flex;
   flex-direction: column;
@@ -53,7 +50,6 @@ body {
   margin-left: 32px;
   margin-bottom: 18px;
 }
-
 .filtro-label {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 700;
@@ -122,7 +118,6 @@ body {
   transition: background 0.2s;
 }
 .button:active,.button:hover {background: #eab101;}
-
 #bipar2dBox { display: none;}
 #biparInput {
   font-size: 2rem;
@@ -135,7 +130,6 @@ body {
   background: #fffdeb;
   margin-top: 5px;
 }
-
 .contadores-container {
   display: flex;
   flex-wrap: wrap;
@@ -144,7 +138,6 @@ body {
   margin-bottom: 20px;
   max-width: calc(5 * 270px + 80px);
 }
-
 .contador {
   border: 1.5px solid #c8d4f3;
   border-radius: 12px;
@@ -157,16 +150,6 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
-
-/* PLACA no texto vermelho, negrito, em todos os lugares */
-input.placa,
-input.placa[disabled],
-input.placa:read-only,
-.placa {
-  color: #e50707 !important;
-  font-weight: bold !important;
-}
-
 .timer {
   color: #31c231;
   font-size: 22px;
@@ -174,47 +157,16 @@ input.placa:read-only,
   letter-spacing: 2px;
   margin-bottom: 10px;
 }
-
 .registros {
   margin-top: 25px;
   width: 90vw;
   max-width: 1400px;
   margin-left: 25px;
 }
-
-.registros ul {
-  padding-left: 18px;
-}
-
-.registros li {
-  margin-bottom: 6px;
-  font-size: 15px;
-  background: #f9f9fc;
-  border-radius: 5px;
-  padding: 4px 8px;
-  word-break: break-all;
-  border-left: 4px solid #fecb2f;
-}
-
-.zera-historico {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  background: #ff4444;
-  color: #fff;
-  border: none;
-  border-radius: 70px;
-  padding: 18px 30px;
-  font-size: 1.16rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0px 2px 7px #aaa;
-  z-index: 1000;
-  transition: background 0.15s;
-}
+.registros ul {padding-left:18px;}
+.registros li {margin-bottom:6px;font-size:15px;background:#f9f9fc;border-radius:5px;padding:4px 8px;word-break:break-all;border-left:4px solid #fecb2f;}
+.zera-historico {position:fixed;right:32px;bottom:32px;background:#ff4444;color:#fff;border:none;border-radius:70px;padding:18px 30px;font-size:1.16rem;font-weight:bold;cursor:pointer;box-shadow:0px 2px 7px #aaa;z-index:1000;transition:background 0.15s;}
 .zera-historico:hover {background:#d80000;}
-
-/* Responsivo */
 @media (max-width:600px) {
   .header-flex-space span {
     font-size: 1.4rem;
