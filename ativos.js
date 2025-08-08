@@ -13,6 +13,19 @@ const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 
+// Timer global para atualizar tempo/cor
+function iniciarAtualizacaoTempo(){
+  if(window.timerAtivos) clearInterval(window.timerAtivos);
+  window.timerAtivos = setInterval(() => {
+    document.querySelectorAll('.contador').forEach(el => {
+      const timerSpan = el.querySelector('.timer');
+      const dt = timerSpan?.getAttribute('data-horaentrada');
+      if (!dt) return;
+      timerSpan.textContent = tempoDecorrido(dt);
+    });
+  }, 1000);
+}
+
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -22,6 +35,7 @@ database.ref("contadores").on("value", snapshot => {
     }
   });
   filtrarAtivos();
+  iniciarAtualizacaoTempo();
 });
 
 function montaCard(dados) {
@@ -36,7 +50,9 @@ function montaCard(dados) {
     <input type="text" value="${dados.transportadora}" disabled class="transportadora"/>
     <input type="text" class="horaEntrada" placeholder="Hora de entrada" value="${dados.horaEntrada ? formatTime(new Date(dados.horaEntrada)) : ''}" readonly>
     <div style="margin-top: 14px; font-weight: bold;">Tempo decorrido:</div>
-    <span class="timer">${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}</span>
+    <span class="timer" data-horaentrada="${dados.horaEntrada}">
+      ${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}
+    </span>
   `;
   el.setAttribute("data-transportadora", dados.transportadora);
   return el;
@@ -45,7 +61,6 @@ function montaCard(dados) {
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
-// Só mostra tempo fixo ao renderizar (não atualiza ao vivo)
 function tempoDecorrido(dtStr) {
   const entrada = new Date(dtStr);
   const diff = Math.floor((Date.now() - entrada.getTime()) / 1000);

@@ -1,9 +1,10 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
   background: #f4f8ff;
 }
+
+/* Cabeçalho amarelo flex com filtro SVC à esquerda */
 .header-flex-space,
 .topo-cabecalho.header-flex-space {
   display: flex;
@@ -42,6 +43,7 @@ body {
   color: #444;
   margin-bottom: 0;
 }
+
 .filtro-esquerda {
   display: flex;
   flex-direction: column;
@@ -74,62 +76,7 @@ body {
   min-width: 200px;
   box-sizing: border-box;
 }
-.novo-contador-btn {
-  background: #fecb2f;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin: 25px 0 18px 25px;
-  width: 180px;
-  height: 40px;
-  font-size: 17px;
-  cursor: pointer;
-  font-weight: bold;
-  display: block;
-  transition: background 0.2s;
-}
-.novo-contador-btn:active, .novo-contador-btn:hover { background: #eab101; }
-.baixar {
-  background: #fecb2f;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin-left: 25px;
-  margin-bottom: 10px;
-  width: 180px;
-  height: 38px;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-.baixar:active,.baixar:hover {background: #eab101;}
-.button {
-  background: #fecb2f;
-  color: #fff;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  margin-bottom: 4px;
-  width: 150px;
-  height: 40px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.2s;
-}
-.button:active,.button:hover {background: #eab101;}
-#bipar2dBox { display: none;}
-#biparInput {
-  font-size: 2rem;
-  width: 340px;
-  padding: 10px;
-  text-align: center;
-  border: 2px solid #fecb2f;
-  border-radius: 10px;
-  outline: none;
-  background: #fffdeb;
-  margin-top: 5px;
-}
+
 .contadores-container {
   display: flex;
   flex-wrap: wrap;
@@ -139,7 +86,7 @@ body {
   max-width: calc(5 * 270px + 80px);
 }
 .contador {
-  border: 1.5px solid #c8d4f3;
+  border: 1px solid #c8d4f3;
   border-radius: 12px;
   padding: 18px 20px;
   width: 250px;
@@ -150,6 +97,15 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
+
+input,select {
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .timer {
   color: #31c231;
   font-size: 22px;
@@ -157,16 +113,26 @@ body {
   letter-spacing: 2px;
   margin-bottom: 10px;
 }
-.registros {
-  margin-top: 25px;
-  width: 90vw;
-  max-width: 1400px;
-  margin-left: 25px;
+
+/* Zerar histórico botão se usar globalmente */
+.zera-historico {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  background: #ff4444;
+  color: #fff;
+  border: none;
+  border-radius: 70px;
+  padding: 18px 30px;
+  font-size: 1.16rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 2px 7px #aaa;
+  z-index: 1000;
+  transition: background 0.15s;
 }
-.registros ul {padding-left:18px;}
-.registros li {margin-bottom:6px;font-size:15px;background:#f9f9fc;border-radius:5px;padding:4px 8px;word-break:break-all;border-left:4px solid #fecb2f;}
-.zera-historico {position:fixed;right:32px;bottom:32px;background:#ff4444;color:#fff;border:none;border-radius:70px;padding:18px 30px;font-size:1.16rem;font-weight:bold;cursor:pointer;box-shadow:0px 2px 7px #aaa;z-index:1000;transition:background 0.15s;}
 .zera-historico:hover {background:#d80000;}
+
 @media (max-width:600px) {
   .header-flex-space span {
     font-size: 1.4rem;
