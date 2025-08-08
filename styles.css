@@ -3,48 +3,29 @@ body {
   margin: 0;
   background: #f4f8ff;
 }
-
-.header-flex-space,
-.topo-cabecalho.header-flex-space {
-  display: flex;
-  align-items: center;
-  background: #fecb2f;
-  color: #fff;
+.header-flex-space, .topo-cabecalho.header-flex-space {
+  display: flex; align-items: center;
+  background: #fecb2f; color: #fff;
   font-size: 2.3rem;
   font-family: 'Segoe UI', Arial, sans-serif;
   font-weight: 800;
-  padding: 22px 0 13px 0;
-  margin-bottom: 0;
+  padding: 22px 0 13px 0; margin-bottom: 0;
   box-shadow: 0 1px 12px 0 #ffeeaa88;
   text-shadow: 1px 1px 4px #af9a04;
 }
-.header-flex-space span {
-  margin-left: 44px;
-  flex: 1;
-  text-align: left;
-}
+.header-flex-space span { margin-left: 44px; flex: 1; text-align: left;}
 .filtro-svc-no-topo {
-  display: flex;
-  align-items: center;
-  margin-left: 30px;
-  margin-right: 34px;
+  display: flex; align-items: center;
+  margin-left: 30px; margin-right: 34px;
 }
 .filtro-svc-no-topo .filtro-label {
-  font-size: 1.13rem;
-  margin-bottom: 0;
-  margin-right: 8px;
-  color: #1565c0;
+  font-size: 1.13rem; margin-bottom: 0; margin-right: 8px; color: #1565c0;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
 .filtro-svc-no-topo .filtro-select {
-  background: #fffbe8;
-  border: none;
-  color: #444;
-  margin-bottom: 0;
-  border-radius: 10px;
-  padding: 7px 20px;
-  font-size: 1.13rem;
-  font-weight: bold;
+  background: #fffbe8; border: none; color: #444; margin-bottom: 0;
+  border-radius: 10px; padding: 7px 20px;
+  font-size: 1.13rem; font-weight: bold;
   box-shadow: 0 1.5px 6px #fff4be41;
 }
 .filtro-esquerda {
@@ -74,17 +55,15 @@ body {
   min-width: 170px;
   box-sizing: border-box;
 }
-
 .acoes-centrais {
   display: flex;
   justify-content: center;
   gap: 18px;
   margin-bottom: 18px;
 }
-
-/* BOTÕES AMARELOS LETRA BRANCA PADRÃO */
-.botao-amarelo {
-  background: #ffd153;
+.botao-amarelo, .novo-contador-btn, .baixar,
+.button, .registrar-entrada, .registrar-saida {
+  background: #ffd153 ;
   color: #fff !important;
   border: none;
   font-weight: bold !important;
@@ -102,12 +81,15 @@ body {
   text-align: center;
   margin-bottom: 18px !important;
 }
-.botao-amarelo:active,
-.botao-amarelo:hover {
+.botao-amarelo:active, .botao-amarelo:hover,
+.novo-contador-btn:active, .novo-contador-btn:hover,
+.baixar:active, .baixar:hover,
+.button:active, .button:hover,
+.registrar-entrada:active, .registrar-entrada:hover,
+.registrar-saida:active, .registrar-saida:hover {
   background: #fecb2f !important;
   color: #fff !important;
 }
-
 .contadores-container {
   display: flex;
   flex-wrap: wrap;
@@ -141,12 +123,18 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-input.placa, input.placa[disabled] {
+
+/* Placa em rosa e vermelho, negrito */
+input.placa,
+input.placa[disabled] {
   color: #e22525 !important;
   font-weight: bold !important;
   font-size: 16px !important;
-  background: #fff7f7 !important;
+  background: #fff5f5 !important;
+  border: 1px solid #e8d7d7 !important;
+  letter-spacing: 0.2em;
 }
+
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -155,7 +143,6 @@ input.placa, input.placa[disabled] {
   letter-spacing: 2px;
 }
 
-/* Botão zerar: vermelho claro, texto vermelho escuro, arredondado */
 .zera-historico {
   position: fixed;
   left: 50%;

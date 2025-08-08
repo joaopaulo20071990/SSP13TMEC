@@ -13,7 +13,6 @@ const database = firebase.database();
 
 const contadoresContainer = document.getElementById('contadoresContainer');
 
-// Atualiza tempo ao vivo
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
   window.timerAtivos = setInterval(() => {
@@ -26,7 +25,6 @@ function iniciarAtualizacaoTempo(){
   }, 1000);
 }
 
-// EXIBIÇÃO ORDENADA: os que têm mais tempo decorrido vem primeiro
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   let ativos = [];
@@ -96,7 +94,7 @@ function filtrarAtivos() {
   });
 }
 
-// Zerar histórico visualização caso tenha:
+// Botão zerar histórico
 document.getElementById('zerarHistoricoBtn').onclick = function() {
   if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
     firebase.database().ref('registros_finalizados').remove();
