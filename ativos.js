@@ -27,18 +27,11 @@ function iniciarAtualizacaoTempo(){
 
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
-  let ativos = [];
+  contadoresContainer.innerHTML = "";
   Object.values(dados).forEach(contador => {
     if (contador.horaEntrada && !contador.horaSaida) {
-      const entrada = new Date(contador.horaEntrada);
-      const tempo = Math.floor((Date.now() - entrada.getTime()) / 1000);
-      ativos.push({...contador, _decorrido: tempo});
+      contadoresContainer.appendChild(montaCard(contador));
     }
-  });
-  ativos.sort((a, b) => b._decorrido - a._decorrido);
-  contadoresContainer.innerHTML = "";
-  ativos.forEach(contador => {
-    contadoresContainer.appendChild(montaCard(contador));
   });
   filtrarAtivos();
   iniciarAtualizacaoTempo();
@@ -92,9 +85,3 @@ function filtrarAtivos() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-
-document.getElementById('zerarHistoricoBtn').onclick = function() {
-  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
-    firebase.database().ref('registros_finalizados').remove();
-  }
-};

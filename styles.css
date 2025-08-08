@@ -81,8 +81,8 @@ body {
   margin-bottom: 18px;
 }
 
-/* BOTÕES AMARELOS, LETRAS BRANCAS */
-.botao-amarelo, .novo-contador-btn, .baixar, .button, .registrar-entrada, .registrar-saida {
+.botao-amarelo, .novo-contador-btn, .baixar,
+.button, .registrar-entrada, .registrar-saida {
   background: #ffd153 !important;
   color: #fff !important;
   border: none;
@@ -97,8 +97,8 @@ body {
   min-height: 47px;
   box-shadow: 0 2px 8px #ffe17c50;
   transition: background 0.15s;
-  display: inline-block;
   text-align: center;
+  display: block;
   margin-bottom: 18px !important;
 }
 .botao-amarelo:active, .botao-amarelo:hover,
@@ -108,7 +108,7 @@ body {
 .registrar-entrada:active, .registrar-entrada:hover,
 .registrar-saida:active, .registrar-saida:hover {
   background: #fecb2f !important;
-  color: #fff !important;
+  color: #fff;
 }
 
 .contadores-container {
@@ -118,6 +118,7 @@ body {
   margin-left: 25px;
   margin-bottom: 20px;
 }
+
 .contador {
   background: #fff;
   border: 2px solid #eae9f5;
@@ -144,14 +145,12 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-/* PLACA: vermelho negrito, fundo branco */
-input.placa, input.placa[disabled] {
-  background: #fff !important;
-  color: #e50707 !important;
+input.placa,
+input.placa[disabled] {
+  color: #e22525 !important;
   font-weight: bold !important;
-  font-size: 18px !important;
-  border: 1.5px solid #efb1b1 !important;
-  letter-spacing: 0.09em;
+  font-size: 16px !important;
+  background: #fff7f7 !important;
 }
 
 .timer {
@@ -162,6 +161,7 @@ input.placa, input.placa[disabled] {
   letter-spacing: 2px;
 }
 
+/* Botão zerar histórico - vermelho claro/letra vermelho escuro */
 .zera-historico {
   position: fixed;
   left: 50%;
@@ -185,6 +185,7 @@ input.placa, input.placa[disabled] {
   background: #ffc3c3;
   color: #881313 !important;
 }
+
 @media (max-width:600px) {
   .header-flex-space span {
     font-size: 1.2rem;
@@ -192,5 +193,5 @@ input.placa, input.placa[disabled] {
   }
   .contadores-container { margin-left:10px; gap: 8px;}
   .filtro-svc-no-topo, .filtro-esquerda {margin-left: 10px;}
-  .botao-amarelo { width: 96vw !important; min-width: 105px;}
+  .botao-amarelo, .novo-contador-btn, .baixar { width: 96vw !important; min-width: 105px; }
 }

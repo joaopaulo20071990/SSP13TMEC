@@ -13,6 +13,7 @@
     </div>
     <span>TMEC - SSP13 — VISUALIZAR ATIVOS</span>
   </header>
+
   <div class="filtro-esquerda">
     <label for="filtroTransportadora" class="filtro-label">Filtrar por Transportadora:</label>
     <select id="filtroTransportadora" class="filtro-select">
@@ -29,12 +30,15 @@
       <option value="RodaCoop">RodaCoop</option>
     </select>
   </div>
+
   <div class="acoes-centrais">
     <button id="bipar2dBtn" class="botao-amarelo">Bipar com Leitor 2D</button>
     <button id="lerQr" class="botao-amarelo">Ler QR Code</button>
   </div>
   <div id="contadoresContainer" class="contadores-container"></div>
+
   <button id="zerarHistoricoBtn" class="zera-historico">🗑 Zerar Histórico</button>
+
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="ativos.js"></script>
