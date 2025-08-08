@@ -36,7 +36,6 @@ database.ref("contadores").on("value", snapshot => {
     }
   });
   ativos.sort((a, b) => b._decorrido - a._decorrido);
-
   contadoresContainer.innerHTML = "";
   ativos.forEach(contador => {
     contadoresContainer.appendChild(montaCard(contador));
@@ -94,7 +93,6 @@ function filtrarAtivos() {
   });
 }
 
-// Botão zerar histórico visualização caso tenha:
 document.getElementById('zerarHistoricoBtn').onclick = function() {
   if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
     firebase.database().ref('registros_finalizados').remove();
