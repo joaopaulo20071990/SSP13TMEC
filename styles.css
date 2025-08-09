@@ -3,19 +3,29 @@ body {
   margin: 0;
   background: #f4f8ff;
 }
+
 .header-flex-space,
 .topo-cabecalho.header-flex-space {
   display: flex;
   align-items: center;
   background: #fecb2f;
   color: #fff;
-  font-size: 2.3rem;
+  font-size: 2.2rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-weight: 800;
   padding: 22px 0 13px 0;
   margin-bottom: 0;
   box-shadow: 0 1px 12px 0 #ffeeaa88;
   text-shadow: 1px 1px 4px #af9a04;
 }
-.header-flex-space span {margin-left: 44px; flex: 1; text-align: left;}
+.header-flex-space span {
+  margin-left: 36px;
+  flex: 1;
+  text-align: left;
+  font-weight: bold;
+  font-size: 2.1rem;
+  letter-spacing: 0.03em;
+}
 .filtro-svc-no-topo {
   display: flex;
   align-items: center;
@@ -27,6 +37,7 @@ body {
   margin-bottom: 0;
   margin-right: 8px;
   color: #1565c0;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 .filtro-svc-no-topo .filtro-select {
   background: #fffbe8;
@@ -72,14 +83,8 @@ body {
   gap: 18px;
   margin-bottom: 18px;
 }
-
-/* BOTÕES AMARELO, LETRAS BRANCAS */
-.botao-amarelo,
-.novo-contador-btn,
-.baixar,
-.button,
-.registrar-entrada,
-.registrar-saida {
+.botao-amarelo, .novo-contador-btn, .baixar,
+.button, .registrar-entrada, .registrar-saida {
   background: #ffd153 !important;
   color: #fff !important;
   border: none;
@@ -126,7 +131,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
-.contador label {margin-bottom: 1px; font-weight: normal; color: #18577a; font-size: 15px;}
+.contador label { margin-bottom: 1px; font-weight: normal; color: #18577a; font-size: 15px }
 .contador input[type="text"], .contador select {
   border-radius: 7px;
   border: 1px solid #dadef1;
@@ -140,14 +145,32 @@ body {
   color: #1866a7;
   background: #f3f7fa;
 }
-/* Campo placa padrão sem negrito/vermelho especial */
-input.placa, input.placa[disabled] {
-  background: #f6f8fc !important;
-  color: #222 !important;
-  font-weight: normal !important;
-  font-size: 16px !important;
-  letter-spacing: normal;
+
+/* SVC verde */
+input.svc, input.svc[disabled] {
+  background: #e7feed !important;
+  color: #07a03a !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  border: 1.5px solid #b1eece !important;
+  letter-spacing: 0.09em;
 }
+/* Placa vermelho negrito fundo branco */
+input.placa, input.placa[disabled] {
+  background: #fff !important;
+  color: #e50707 !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  border: 1.5px solid #efb1b1 !important;
+  letter-spacing: 0.09em;
+}
+
+/* Transportadora no padrão (não altera cor/negrito) */
+input.transportadora, .contador input.transportadora {
+  font-weight: 500 !important;
+}
+
+/* Timer */
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -155,6 +178,8 @@ input.placa, input.placa[disabled] {
   margin-bottom: 10px;
   letter-spacing: 2px;
 }
+
+/* Botão zerar: vermelho claro, texto vermelho escuro, arredondado */
 .zera-historico {
   position: fixed;
   left: 50%;
