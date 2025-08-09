@@ -1,37 +1,15 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f4f8ff;
+  font-family: Arial, sans-serif; margin: 0; background: #f4f8ff;
 }
 
-.header-flex-space,
-.topo-cabecalho.header-flex-space {
-  display: flex;
-  align-items: center;
-  background: #fecb2f;
-  color: #fff;
-  font-size: 2.2rem;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  font-weight: 800;
-  padding: 22px 0 13px 0;
-  margin-bottom: 0;
-  box-shadow: 0 1px 12px 0 #ffeeaa88;
-  text-shadow: 1px 1px 4px #af9a04;
-}
-.header-flex-space span {
-  margin-left: 36px;
-  flex: 1;
-  text-align: left;
-  font-weight: bold;
-  font-size: 2.1rem;
-  letter-spacing: 0.03em;
-}
-.filtro-svc-no-topo {
-  display: flex;
-  align-items: center;
-  margin-left: 30px;
-  margin-right: 34px;
-}
+/* Cabeçalho e filtros */
+.header-flex-space, .topo-cabecalho.header-flex-space {
+  display: flex; align-items: center; background: #fecb2f; color: #fff;
+  font-size: 2.3rem; font-family: 'Segoe UI', Arial, sans-serif; font-weight: 800;
+  padding: 22px 0 13px 0; margin-bottom: 0;
+  box-shadow: 0 1px 12px 0 #ffeeaa88; text-shadow: 1px 1px 4px #af9a04;}
+.header-flex-space span {margin-left: 44px; flex: 1; text-align: left;}
+.filtro-svc-no-topo {display: flex; align-items: center; margin-left: 30px; margin-right: 34px;}
 .filtro-svc-no-topo .filtro-label {
   font-size: 1.13rem;
   margin-bottom: 0;
@@ -50,41 +28,13 @@ body {
   font-weight: bold;
   box-shadow: 0 1.5px 6px #fff4be41;
 }
-.filtro-esquerda {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-top: 24px;
-  margin-left: 32px;
-  margin-bottom: 18px;
-}
-.filtro-label {
-  font-size: 1.18rem;
-  color: #1872c0;
-  margin-bottom: 3px;
-  font-weight: 700;
-}
-.filtro-select {
-  font-size: 1.12rem;
-  font-weight: bold;
-  color: #222;
-  background: #e8f4ff;
-  border-radius: 10px;
-  border: none;
-  outline: none;
-  padding: 7px 15px;
-  margin-bottom: 9px;
-  min-width: 170px;
-  box-sizing: border-box;
-}
-.acoes-centrais {
-  display: flex;
-  justify-content: center;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-.botao-amarelo, .novo-contador-btn, .baixar,
-.button, .registrar-entrada, .registrar-saida {
+.filtro-esquerda {display: flex; flex-direction: column; align-items: flex-start; margin-top: 24px; margin-left: 32px; margin-bottom: 18px;}
+.filtro-label {font-size: 1.18rem; color: #1872c0; margin-bottom: 3px; font-weight: 700;}
+.filtro-select {font-size: 1.12rem; font-weight: bold; color: #222; background: #e8f4ff; border-radius: 10px; border: none; outline: none; padding: 7px 15px; margin-bottom: 9px; min-width: 170px; box-sizing: border-box;}
+.acoes-centrais {display: flex; justify-content: center; gap: 18px; margin-bottom: 18px;}
+
+/* Botões amarelos - mesmos em ambas páginas */
+.botao-amarelo, .novo-contador-btn, .baixar, .button, .registrar-entrada, .registrar-saida {
   background: #ffd153 !important;
   color: #fff !important;
   border: none;
@@ -112,13 +62,9 @@ body {
   background: #fecb2f !important;
   color: #fff !important;
 }
-.contadores-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-left: 25px;
-  margin-bottom: 20px;
-}
+
+/* Cartões */
+.contadores-container {display: flex; flex-wrap: wrap; gap: 20px; margin-left: 25px; margin-bottom: 20px;}
 .contador {
   background: #fff;
   border: 2px solid #eae9f5;
@@ -131,7 +77,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
-.contador label { margin-bottom: 1px; font-weight: normal; color: #18577a; font-size: 15px }
+.contador label {margin-bottom: 1px; color: #18577a; font-size: 15px;}
 .contador input[type="text"], .contador select {
   border-radius: 7px;
   border: 1px solid #dadef1;
@@ -146,16 +92,17 @@ body {
   background: #f3f7fa;
 }
 
-/* SVC verde */
+/* CAMPO SVC: verde, fundo verde claro, negrito */
 input.svc, input.svc[disabled] {
-  background: #e7feed !important;
-  color: #07a03a !important;
+  background: #e9fae2 !important;
+  color: #198c24 !important;
   font-weight: bold !important;
-  font-size: 18px !important;
-  border: 1.5px solid #b1eece !important;
-  letter-spacing: 0.09em;
+  font-size: 17px !important;
+  border: 1.5px solid #b0e2b6 !important;
+  letter-spacing: 0.04em;
 }
-/* Placa vermelho negrito fundo branco */
+
+/* CAMPO PLACA: vermelho, negrito, fundo branco */
 input.placa, input.placa[disabled] {
   background: #fff !important;
   color: #e50707 !important;
@@ -165,12 +112,11 @@ input.placa, input.placa[disabled] {
   letter-spacing: 0.09em;
 }
 
-/* Transportadora no padrão (não altera cor/negrito) */
-input.transportadora, .contador input.transportadora {
+/* TRANSPORTADORA padrão (sem negrito/cor especial) */
+input.transportadora, .contador input.transportadora, select.transportadora {
   font-weight: 500 !important;
 }
 
-/* Timer */
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -179,7 +125,6 @@ input.transportadora, .contador input.transportadora {
   letter-spacing: 2px;
 }
 
-/* Botão zerar: vermelho claro, texto vermelho escuro, arredondado */
 .zera-historico {
   position: fixed;
   left: 50%;
@@ -204,10 +149,7 @@ input.transportadora, .contador input.transportadora {
   color: #881313 !important;
 }
 @media (max-width:600px) {
-  .header-flex-space span {
-    font-size: 1.2rem;
-    margin-left: 8px;
-  }
+  .header-flex-space span {font-size: 1.2rem;margin-left: 8px;}
   .contadores-container { margin-left:10px; gap: 8px;}
   .filtro-svc-no-topo, .filtro-esquerda {margin-left: 10px;}
   .botao-amarelo { width: 96vw !important; min-width: 105px;}

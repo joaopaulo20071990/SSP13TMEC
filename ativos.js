@@ -1,16 +1,7 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
-  authDomain: "tmec-mariliassp13.firebaseapp.com",
-  databaseURL: "https://tmec-mariliassp13-default-rtdb.firebaseio.com",
-  projectId: "tmec-mariliassp13",
-  storageBucket: "tmec-mariliassp13.appspot.com",
-  messagingSenderId: "1078206182223",
-  appId: "1:1078206182223:web:e07aa821b482efb29acb3a",
-  measurementId: "G-TEB1KFTEZP"
-};
-firebase.initializeApp(firebaseConfig);
+// ... firebaseConfig igual ao seu ...
 const database = firebase.database();
-const contadoresContainer = document.getElementById('contadoresContainer');
+const contadoresContainer = document.getElementById("contadoresContainer");
+
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
   window.timerAtivos = setInterval(() => {
@@ -22,6 +13,7 @@ function iniciarAtualizacaoTempo(){
     });
   }, 1000);
 }
+
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   let ativos = [];
@@ -32,7 +24,7 @@ database.ref("contadores").on("value", snapshot => {
       ativos.push({...contador, _decorrido: tempo});
     }
   });
-  ativos.sort((a, b) => b._decorrido - a._decorrido); // mais tempo em cima
+  ativos.sort((a, b) => b._decorrido - a._decorrido);
   contadoresContainer.innerHTML = "";
   ativos.forEach(contador => {
     contadoresContainer.appendChild(montaCard(contador));
@@ -40,6 +32,7 @@ database.ref("contadores").on("value", snapshot => {
   filtrarAtivos();
   iniciarAtualizacaoTempo();
 });
+
 function montaCard(dados) {
   const el = document.createElement('div');
   el.className = 'contador';
@@ -59,6 +52,7 @@ function montaCard(dados) {
   el.setAttribute("data-transportadora", dados.transportadora);
   return el;
 }
+
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
