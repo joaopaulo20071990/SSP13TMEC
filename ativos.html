@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Visualização de Contadores Ativos</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
   <header class="topo-cabecalho header-flex-space">
@@ -11,9 +12,8 @@
       <label for="filtroSVC" class="filtro-label">Filtrar por SVC:</label>
       <input id="filtroSVC" class="filtro-select" placeholder="Digite o SVC"/>
     </div>
-    <span>TMEC - Mercado Livre — PLACAS ATIVAS</span>
+    <span>TMEC - Mercado Livre — VISUALIZAR ATIVOS</span>
   </header>
-
   <div class="filtro-esquerda">
     <label for="filtroTransportadora" class="filtro-label">Filtrar por Transportadora:</label>
     <select id="filtroTransportadora" class="filtro-select">
@@ -35,6 +35,10 @@
     <button id="bipar2dBtn" class="botao-amarelo">Bipar com Leitor 2D</button>
     <button id="lerQr" class="botao-amarelo">Ler QR Code</button>
   </div>
+  <div id="bipar2dBox" style="display:none; flex-direction:column; align-items:center;">
+    <input id="biparInput" type="text" style="font-size:2rem; width:320px; padding:10px; text-align:center;margin:10px 0;" placeholder="Bipe o código 2D aqui..." autofocus>
+  </div>
+  <div id="qr-show" style="width:320px; margin-left:32px; display:none"></div>
   <div id="contadoresContainer" class="contadores-container"></div>
 
   <button id="zerarHistoricoBtn" class="zera-historico">🗑 Zerar Histórico</button>
