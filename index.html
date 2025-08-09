@@ -10,10 +10,11 @@
   <header class="topo-cabecalho header-flex-space">
     <div class="filtro-svc-no-topo">
       <label for="filtroSVC" class="filtro-label">Filtrar por SVC:</label>
-      <input id="filtroSVC" class="filtro-select" placeholder="Digite o SVC"/>
+      <input id="filtroSVC" class="filtro-select" style="width:160px; margin-bottom:0;" placeholder="Digite o SVC"/>
     </div>
     <span>TMEC - SSP13</span>
   </header>
+
   <div class="filtro-esquerda">
     <label for="filtroTransportadora" class="filtro-label">Filtrar por Transportadora:</label>
     <select id="filtroTransportadora" class="filtro-select">
@@ -30,20 +31,24 @@
       <option value="RodaCoop">RodaCoop</option>
     </select>
   </div>
-  <div class="acoes-centrais">
-    <button id="bipar2dBtn" class="botao-amarelo">Bipar com Leitor 2D</button>
-    <button id="lerQr" class="botao-amarelo">Ler QR Code</button>
+
+  <button id="bipar2dBtn" class="button" style="margin-left:32px; margin-bottom:15px;">Bipar com Leitor 2D</button>
+  <div id="bipar2dBox" style="margin-left:32px; margin-bottom:15px; display:none;">
+    <input id="biparInput" type="text" style="font-size:2rem; width:340px; padding:10px; text-align:center;" placeholder="Bipe o código 2D aqui..." autofocus>
   </div>
-  <div class="acoes-centrais">
-    <button id="novoContadorBtn" class="botao-amarelo">Novo Contador</button>
-    <button id="btnBaixar" class="botao-amarelo">Baixar Registros</button>
-  </div>
+  
+  <button id="lerQr" class="button" style="margin-left:32px; margin-bottom:15px;">Ler QR Code</button>
+  <div id="qr-show" style="width:320px; margin-left:32px; display:none;"></div>
+
+  <button id="novoContadorBtn" class="novo-contador-btn">Novo Contador</button>
   <div id="contadoresContainer" class="contadores-container"></div>
+  <button id="btnBaixar" class="baixar">Baixar Registros</button>
   <div id="registros" class="registros">
     <h3>Registros:</h3>
     <ul id="listaRegistros"></ul>
   </div>
   <button id="zerarHistoricoBtn" class="zera-historico">🗑 Zerar Histórico</button>
+
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>

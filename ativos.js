@@ -1,6 +1,17 @@
-// ... firebaseConfig igual ao seu ...
+const firebaseConfig = {
+  apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
+  authDomain: "tmec-mariliassp13.firebaseapp.com",
+  databaseURL: "https://tmec-mariliassp13-default-rtdb.firebaseio.com",
+  projectId: "tmec-mariliassp13",
+  storageBucket: "tmec-mariliassp13.appspot.com",
+  messagingSenderId: "1078206182223",
+  appId: "1:1078206182223:web:e07aa821b482efb29acb3a",
+  measurementId: "G-TEB1KFTEZP"
+};
+firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-const contadoresContainer = document.getElementById("contadoresContainer");
+
+const contadoresContainer = document.getElementById('contadoresContainer');
 
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
@@ -16,18 +27,11 @@ function iniciarAtualizacaoTempo(){
 
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
-  let ativos = [];
+  contadoresContainer.innerHTML = "";
   Object.values(dados).forEach(contador => {
     if (contador.horaEntrada && !contador.horaSaida) {
-      const entrada = new Date(contador.horaEntrada);
-      const tempo = Math.floor((Date.now() - entrada.getTime()) / 1000);
-      ativos.push({...contador, _decorrido: tempo});
+      contadoresContainer.appendChild(montaCard(contador));
     }
-  });
-  ativos.sort((a, b) => b._decorrido - a._decorrido);
-  contadoresContainer.innerHTML = "";
-  ativos.forEach(contador => {
-    contadoresContainer.appendChild(montaCard(contador));
   });
   filtrarAtivos();
   iniciarAtualizacaoTempo();
@@ -64,8 +68,10 @@ function tempoDecorrido(dtStr) {
   const s = String(diff%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
 }
+
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarAtivos);
 document.getElementById('filtroSVC').addEventListener('input', filtrarAtivos);
+
 function filtrarAtivos() {
   const selecao = document.getElementById('filtroTransportadora').value;
   const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
@@ -79,8 +85,3 @@ function filtrarAtivos() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-document.getElementById('zerarHistoricoBtn').onclick = function() {
-  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
-    firebase.database().ref('registros_finalizados').remove();
-  }
-};
