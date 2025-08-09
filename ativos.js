@@ -10,9 +10,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-
 const contadoresContainer = document.getElementById('contadoresContainer');
-
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
   window.timerAtivos = setInterval(() => {
@@ -24,19 +22,24 @@ function iniciarAtualizacaoTempo(){
     });
   }, 1000);
 }
-
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
-  contadoresContainer.innerHTML = "";
+  let ativos = [];
   Object.values(dados).forEach(contador => {
     if (contador.horaEntrada && !contador.horaSaida) {
-      contadoresContainer.appendChild(montaCard(contador));
+      const entrada = new Date(contador.horaEntrada);
+      const tempo = Math.floor((Date.now() - entrada.getTime()) / 1000);
+      ativos.push({...contador, _decorrido: tempo});
     }
+  });
+  ativos.sort((a, b) => b._decorrido - a._decorrido); // mais tempo em cima
+  contadoresContainer.innerHTML = "";
+  ativos.forEach(contador => {
+    contadoresContainer.appendChild(montaCard(contador));
   });
   filtrarAtivos();
   iniciarAtualizacaoTempo();
 });
-
 function montaCard(dados) {
   const el = document.createElement('div');
   el.className = 'contador';
@@ -56,7 +59,6 @@ function montaCard(dados) {
   el.setAttribute("data-transportadora", dados.transportadora);
   return el;
 }
-
 function formatTime(date) {
   return date.toLocaleTimeString('pt-BR').padStart(8, '0');
 }
@@ -68,10 +70,8 @@ function tempoDecorrido(dtStr) {
   const s = String(diff%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
 }
-
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarAtivos);
 document.getElementById('filtroSVC').addEventListener('input', filtrarAtivos);
-
 function filtrarAtivos() {
   const selecao = document.getElementById('filtroTransportadora').value;
   const svcFiltro = document.getElementById('filtroSVC').value.trim().toLowerCase();
@@ -85,3 +85,8 @@ function filtrarAtivos() {
     c.style.display = exibir ? '' : 'none';
   });
 }
+document.getElementById('zerarHistoricoBtn').onclick = function() {
+  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
+    firebase.database().ref('registros_finalizados').remove();
+  }
+};
