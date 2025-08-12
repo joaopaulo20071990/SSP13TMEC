@@ -10,45 +10,8 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
 const contadoresContainer = document.getElementById('contadoresContainer');
-
-// Bipar com Leitor 2D funcional
-document.getElementById('bipar2dBtn').onclick = function() {
-  document.getElementById('bipar2dBox').style.display = 'flex';
-  document.getElementById('biparInput').value = '';
-  document.getElementById('biparInput').focus();
-};
-document.getElementById('biparInput').addEventListener('keydown', function(e){
-  if (e.key === "Enter" || e.key === "Tab") {
-    let valor = this.value.trim();
-    if(valor) {
-      alert('Código lido do bipador: ' + valor);
-    }
-    this.value = '';
-    document.getElementById('bipar2dBox').style.display = 'none';
-  }
-});
-
-// Ler QR Code funcional
-document.getElementById('lerQr').onclick = function() {
-  document.getElementById('qr-show').style.display = 'block';
-  const qr = new Html5Qrcode("qr-show");
-  Html5Qrcode.getCameras().then(cameras => {
-    if (cameras && cameras.length) {
-      qr.start(
-        cameras[0].id,
-        { fps: 10, qrbox: 220 },
-        qrCodeMessage => {
-          qr.stop();
-          document.getElementById('qr-show').style.display = 'none';
-          alert("QR lido: " + qrCodeMessage);
-        }
-      );
-    } else {
-      alert("Câmera não encontrada.");
-    }
-  });
-};
 
 function iniciarAtualizacaoTempo(){
   if(window.timerAtivos) clearInterval(window.timerAtivos);
@@ -64,19 +27,11 @@ function iniciarAtualizacaoTempo(){
 
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
-  let ativos = [];
+  contadoresContainer.innerHTML = "";
   Object.values(dados).forEach(contador => {
     if (contador.horaEntrada && !contador.horaSaida) {
-      const entrada = new Date(contador.horaEntrada);
-      const tempo = Math.floor((Date.now() - entrada.getTime()) / 1000);
-      ativos.push({...contador, _decorrido: tempo});
+      contadoresContainer.appendChild(montaCard(contador));
     }
-  });
-  ativos.sort((a, b) => b._decorrido - a._decorrido);
-
-  contadoresContainer.innerHTML = "";
-  ativos.forEach(contador => {
-    contadoresContainer.appendChild(montaCard(contador));
   });
   filtrarAtivos();
   iniciarAtualizacaoTempo();
@@ -113,6 +68,7 @@ function tempoDecorrido(dtStr) {
   const s = String(diff%60).padStart(2,'0');
   return `${h}:${m}:${s}`;
 }
+
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarAtivos);
 document.getElementById('filtroSVC').addEventListener('input', filtrarAtivos);
 
@@ -129,8 +85,3 @@ function filtrarAtivos() {
     c.style.display = exibir ? '' : 'none';
   });
 }
-document.getElementById('zerarHistoricoBtn').onclick = function() {
-  if (window.confirm("Tem certeza que deseja apagar TODO o histórico para TODOS?")) {
-    firebase.database().ref('registros_finalizados').remove();
-  }
-};
