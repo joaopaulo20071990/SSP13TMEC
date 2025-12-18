@@ -104,7 +104,7 @@ body {
 .baixar:active, .baixar:hover,
 .button:active, .button:hover,
 .registrar-entrada:active, .registrar-entrada:hover,
-.registrar-saida:active, .registrar-saida:hover {
+.registrar-saida:active, .registrar-saida:hover  {
   background: #fecb2f !important;
   color: #fff !important;
 }
@@ -127,7 +127,15 @@ body {
   flex-direction: column;
   align-items: flex-start;
 }
-.contador label {margin-bottom: 1px; color: #18577a; font-size: 15px;}
+.contador.novo {
+  border: 2.5px dashed #1872c0;
+  background: #eaf7ff;
+}
+.contador label {
+  margin-bottom: 1px;
+  color: #18577a;
+  font-size: 15px;
+}
 .contador input[type="text"], .contador select {
   border-radius: 7px;
   border: 1px solid #dadef1;
@@ -167,7 +175,6 @@ input.placa, input.placa[disabled] {
 input.transportadora, .contador input.transportadora, select.transportadora {
   font-weight: 500 !important;
 }
-
 .timer {
   color: #21c921;
   font-size: 22px;
@@ -175,6 +182,7 @@ input.transportadora, .contador input.transportadora, select.transportadora {
   margin-bottom: 10px;
   letter-spacing: 2px;
 }
+
 .zera-historico {
   position: fixed;
   left: 50%;
@@ -194,10 +202,51 @@ input.transportadora, .contador input.transportadora, select.transportadora {
   text-align: center;
   letter-spacing: 0.02em;
 }
-.zera-historico:hover {background: #ffc3c3;color: #881313 !important;}
+.zera-historico:hover {
+  background: #ffc3c3;
+  color: #881313 !important;
+}
+
+.registros {
+  margin: 30px 0 25px 25px;
+  background: #eaf7ff;
+  border-radius: 9px;
+  padding: 16px;
+  width: 400px;
+  min-height: 60px;
+  box-shadow: 0 2px 6px #e8e8ffbb;
+}
+.registros h3 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: #155d99;
+}
+.registros ul {
+  margin: 0;
+  padding-left: 16px;
+  color: #444;
+  font-size: 15px;
+}
+
 @media (max-width:600px) {
-  .header-flex-space span { font-size: 1.2rem;margin-left: 8px;}
-  .contadores-container { margin-left:10px; gap: 8px;}
-  .filtro-svc-no-topo, .filtro-esquerda {margin-left: 10px;}
-  .botao-amarelo { width: 96vw !important; min-width: 105px;}
+  .header-flex-space span {
+    font-size: 1.2rem;
+    margin-left: 8px;
+  }
+  .contadores-container {
+    margin-left:10px;
+    gap: 8px;
+  }
+  .filtro-svc-no-topo, .filtro-esquerda {
+    margin-left: 10px;
+  }
+  .botao-amarelo {
+    width: 96vw !important;
+    min-width: 105px;
+  }
+  .registros {
+    width: 95vw;
+    margin-left: 4px;
+    padding-left: 7px;
+  }
 }

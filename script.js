@@ -1,3 +1,4 @@
+// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyC_ptT-QJVoNaX7IWJRpbvE-9Plwt2DyY8",
   authDomain: "tmec-mariliassp13.firebaseapp.com",
@@ -14,7 +15,7 @@ const database = firebase.database();
 const contadoresContainer = document.getElementById('contadoresContainer');
 const listaRegistros = document.getElementById('listaRegistros');
 
-// HISTÓRICO GLOBAL FIREBASE
+// Histórico Global
 function carregarHistoricoGlobal() {
   database.ref('registros_finalizados').on('value', snapshot => {
     listaRegistros.innerHTML = "";
@@ -41,6 +42,7 @@ function zerarHistoricoGlobal() {
 window.addEventListener('DOMContentLoaded', carregarHistoricoGlobal);
 document.getElementById('zerarHistoricoBtn').onclick = zerarHistoricoGlobal;
 
+// Bipar Com Leitor 2D
 const bipar2dBtn = document.getElementById('bipar2dBtn');
 const bipar2dBox = document.getElementById('bipar2dBox');
 const biparInput = document.getElementById('biparInput');
@@ -73,6 +75,7 @@ biparInput.addEventListener('keydown', function(e){
   }
 });
 
+// Ler QR Code
 document.getElementById('lerQr').onclick = function() {
   document.getElementById('qr-show').style.display = 'block';
   const html5QrCode = new Html5Qrcode("qr-show");
@@ -106,9 +109,9 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
-// BOTÃO DE NOVO CONTADOR
+// Novo Contador Manual
 document.getElementById("novoContadorBtn").onclick = function() {
-    if (document.querySelector('.contador.novo')) return; // Evita mais de um formulário aberto
+    if (document.querySelector('.contador.novo')) return;
     const form = document.createElement('div');
     form.className = 'contador novo';
     form.innerHTML = `
@@ -130,10 +133,11 @@ document.getElementById("novoContadorBtn").onclick = function() {
         <option value="BASEPEX ENCOM">BASEPEX ENCOM</option>
         <option value="RodaCoop">RodaCoop</option>
       </select>
-      <button class="button registrar-entrada">Registrar Entrada</button>
+      <button class="botao-amarelo registrar-entrada">Registrar Entrada</button>
       <button class="remover cancelar">Cancelar</button>
     `;
-    document.getElementById('contadoresContainer').prepend(form);
+    contadoresContainer.prepend(form);
+
     form.querySelector('.registrar-entrada').onclick = function() {
         const svc = form.querySelector('.svc').value.trim();
         const placa = form.querySelector('.placa').value.trim().toUpperCase();
@@ -153,6 +157,7 @@ document.getElementById("novoContadorBtn").onclick = function() {
     };
 };
 
+// Exibe os contadores
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -175,11 +180,11 @@ function criarContadorDoBanco(id, dados) {
     <input type="text" value="${dados.placa}" disabled class="placa"/>
     <label>Transportadora:</label>
     <input type="text" value="${dados.transportadora}" disabled class="transportadora"/>
-    <button class="button btnEntrada">Registrar Entrada</button>
+    <button class="botao-amarelo btnEntrada">Registrar Entrada</button>
     <input type="text" class="horaEntrada" placeholder="Hora de entrada" value="${dados.horaEntrada ? formatTime(new Date(dados.horaEntrada)) : ''}" readonly>
     <div style="margin: 15px 0 0 0; font-weight: bold;">Tempo decorrido:</div>
     <span class="timer">${dados.horaEntrada ? tempoDecorrido(dados.horaEntrada) : "00:00:00"}</span>
-    <button class="button btnSaida">Registrar Saída</button>
+    <button class="botao-amarelo btnSaida">Registrar Saída</button>
     <input type="text" class="horaSaida" placeholder="Hora de saída" value="${dados.horaSaida ? formatTime(new Date(dados.horaSaida)) : ""}" readonly>
   `;
   const btnEntrada = contador.querySelector(".btnEntrada");
@@ -201,7 +206,6 @@ function criarContadorDoBanco(id, dados) {
 
   btnSaida.onclick = function () {
     if (!dados.horaEntrada) return;
-    // CONFIRM antes de finalizar
     const confirmar = window.confirm("Gostaria de finalizar?\n\nClique em OK para finalizar. Clique em Cancelar para manter o contador ativo.");
     if (!confirmar) return;
 
@@ -217,7 +221,7 @@ function criarContadorDoBanco(id, dados) {
     database.ref('contadores/' + id).remove();
   };
 
-  // Tempo decorrido dinâmico
+  // Tempo decorrido em tempo real
   if (dados.horaEntrada && !dados.horaSaida) {
     const entrada = new Date(dados.horaEntrada);
     timerInterval = setInterval(() => {
@@ -231,6 +235,7 @@ function criarContadorDoBanco(id, dados) {
   return contador;
 }
 
+// Baixar Histórico
 document.getElementById("btnBaixar").onclick = function() {
   const registros = Array.from(document.querySelectorAll('#listaRegistros li'))
     .map(li => li.textContent)
@@ -249,6 +254,7 @@ document.getElementById("btnBaixar").onclick = function() {
   }, 0);
 };
 
+// Filtros
 document.getElementById('filtroTransportadora').addEventListener('change', filtrarContadores);
 document.getElementById('filtroSVC').addEventListener('input', filtrarContadores);
 
@@ -277,8 +283,5 @@ function formatDuration(seconds) {
 function tempoDecorrido(dtStr) {
   const entrada = new Date(dtStr);
   const diff = Math.floor((Date.now() - entrada.getTime()) / 1000);
-  const h = String(Math.floor(diff/3600)).padStart(2,'0');
-  const m = String(Math.floor((diff%3600)/60)).padStart(2,'0');
-  const s = String(diff%60).padStart(2,'0');
-  return `${h}:${m}:${s}`;
+  return formatDuration(diff);
 }
