@@ -106,6 +106,53 @@ document.getElementById('lerQr').onclick = function() {
   });
 };
 
+// BOTÃO DE NOVO CONTADOR
+document.getElementById("novoContadorBtn").onclick = function() {
+    if (document.querySelector('.contador.novo')) return; // Evita mais de um formulário aberto
+    const form = document.createElement('div');
+    form.className = 'contador novo';
+    form.innerHTML = `
+      <label>SVC:</label>
+      <input type="text" class="svc" placeholder="Digite o SVC"/>
+      <label>Placa:</label>
+      <input type="text" class="placa" placeholder="Digite a placa"/>
+      <label>Transportadora:</label>
+      <select class="transportadora">
+        <option value="">Selecione</option>
+        <option value="A L C TRANSPORTES">A L C TRANSPORTES</option>
+        <option value="Murici">Murici</option>
+        <option value="TORRESTRANSP">TORRESTRANSP</option>
+        <option value="UNICA TRANSPORTES">UNICA TRANSPORTES</option>
+        <option value="BLD LOGÍSTICA">BLD LOGÍSTICA</option>
+        <option value="Kangu Logistics">Kangu Logistics</option>
+        <option value="ON TIME SERVICOS">ON TIME SERVICOS</option>
+        <option value="3A BRASIL">3A BRASIL</option>
+        <option value="BASEPEX ENCOM">BASEPEX ENCOM</option>
+        <option value="RodaCoop">RodaCoop</option>
+      </select>
+      <button class="button registrar-entrada">Registrar Entrada</button>
+      <button class="remover cancelar">Cancelar</button>
+    `;
+    document.getElementById('contadoresContainer').prepend(form);
+    form.querySelector('.registrar-entrada').onclick = function() {
+        const svc = form.querySelector('.svc').value.trim();
+        const placa = form.querySelector('.placa').value.trim().toUpperCase();
+        const transportadora = form.querySelector('.transportadora').value;
+        if (!svc || !placa || !transportadora) {
+          alert('Preencha o SVC, placa e selecione a transportadora!');
+          return;
+        }
+        database.ref('contadores').push({
+          svc, placa, transportadora, horaEntrada: new Date().toISOString(),
+          horaSaida: "", tempoDecorrido: 0, ativo: true
+        });
+        form.remove();
+    };
+    form.querySelector('.cancelar').onclick = function() {
+      form.remove();
+    };
+};
+
 database.ref("contadores").on("value", snapshot => {
   const dados = snapshot.val() || {};
   contadoresContainer.innerHTML = "";
@@ -114,59 +161,6 @@ database.ref("contadores").on("value", snapshot => {
   });
   filtrarContadores();
 });
-
-document.getElementById("novoContadorBtn").onclick = function() {
-  exibirFormularioNovo();
-};
-
-function exibirFormularioNovo() {
-  const form = document.createElement('div');
-  form.className = 'contador';
-  form.innerHTML = `
-    <label>SVC:</label>
-    <input type="text" class="svc" placeholder="Digite o SVC"/>
-    <label>Placa:</label>
-    <input type="text" class="placa" placeholder="Digite a placa"/>
-    <label>Transportadora:</label>
-    <select class="transportadora">
-      <option value="">Selecione</option>
-      <option value="A L C TRANSPORTES">A L C TRANSPORTES</option>
-      <option value="Murici">Murici</option>
-      <option value="TORRESTRANSP">TORRESTRANSP</option>
-      <option value="UNICA TRANSPORTES">UNICA TRANSPORTES</option>
-      <option value="BLD LOGÍSTICA">BLD LOGÍSTICA</option>
-      <option value="Kangu Logistics">Kangu Logistics</option>
-      <option value="ON TIME SERVICOS">ON TIME SERVICOS</option>
-      <option value="3A BRASIL">3A BRASIL</option>
-      <option value="BASEPEX ENCOM">BASEPEX ENCOM</option>
-      <option value="RodaCoop">RodaCoop</option>
-    </select>
-    <button class="button registrar-entrada">Registrar Entrada</button>
-    <button class="remover cancelar">Cancelar</button>
-  `;
-  contadoresContainer.insertBefore(form, contadoresContainer.firstChild);
-
-  form.querySelector(".registrar-entrada").onclick = () => {
-    const svc = form.querySelector('.svc').value.trim();
-    const placa = form.querySelector('.placa').value.trim();
-    const transportadora = form.querySelector('.transportadora').value;
-    if (!svc || !placa || !transportadora) {
-      alert("Preencha o SVC, placa e selecione a transportadora!");
-      return;
-    }
-    database.ref('contadores').push({
-      svc,
-      placa,
-      transportadora,
-      horaEntrada: new Date().toISOString(),
-      horaSaida: "",
-      tempoDecorrido: 0,
-      ativo: true
-    });
-    form.remove();
-  };
-  form.querySelector(".cancelar").onclick = () => form.remove();
-}
 
 function criarContadorDoBanco(id, dados) {
   const contador = document.createElement("div");
